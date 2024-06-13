@@ -1,0 +1,107 @@
+import { useContext, useState } from "react";
+import { BudgetContext } from "../context/Context";
+import { v4 as uuidv4 } from "uuid";
+
+function ExpensesForm() {
+  const { dispatch } = useContext(BudgetContext);
+  const [transactionType, setTransactionType] = useState();
+  const [category, setCategory] = useState();
+  const [amount, setAmount] = useState("");
+  const [customTransaction, setCustomTransaction] = useState("");
+  const [customCategory, setCustomCategory] = useState("");
+
+  const handleTransactionType = (e) => {
+    setTransactionType(e.target.value);
+  };
+  const handleCategoryChange = (e) => {
+    setCategory(e.target.value);
+  };
+  const handleAmountChange = (e) => {
+    let value = e.target.value;
+    //if expenses are chosen then make the value negative
+    if (transactionType === "expenses") {
+      value = -Math.abs(value);
+    }
+    setAmount(value);
+  };
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    dispatch({
+      type: "ADD_TRANSACTION",
+      payload: { type: transactionType, category, amount: amount },
+    });
+    setTransactionType("");
+    setCategory("");
+    setAmount("");
+  };
+
+  //conditional rendering depending on transaction type
+  const categories =
+    transactionType === "expenses"
+      ? [
+          "Rent",
+          "Utilities",
+          "Groceries",
+          "Insurance",
+          "Car/Transport",
+          "Phone",
+          "Internet",
+          "Memberships/Subscriptions",
+          "Eating Out",
+          "Clothes",
+          "Hair/Personal Care",
+          "Credit Card",
+          "Loan",
+          "Entertainment",
+          "Gifts",
+        ]
+      : ["Salary", "Investment", "Side Business"];
+  return (
+    <div className="form-container">
+      <h1>Expense Tracker</h1>
+      <form onSubmit={submitHandler}>
+        <div className="form-group">
+          <select
+            name="transactionType"
+            id="transactionType"
+            value={transactionType}
+            onChange={handleTransactionType}
+            required
+          >
+            <option value="">Transaction type</option>
+            <option value="income">Income</option>
+            <option value="expenses">Expenses</option>
+          </select>
+        </div>
+        <div className="form-group">
+          <select
+            name="categories"
+            id="categories"
+            onChange={handleCategoryChange}
+            required
+          >
+            <option value="">Category</option>
+            {categories.map((category) => (
+              <option key={category} value={category}>
+                {category}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="form-group">
+          <input
+            type="number"
+            placeholder="Amount"
+            value={amount}
+            onChange={handleAmountChange}
+            required
+          />
+        </div>
+        <button type="submit">Add</button>
+      </form>
+    </div>
+  );
+}
+
+export default ExpensesForm;

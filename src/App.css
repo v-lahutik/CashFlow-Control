@@ -1,0 +1,78 @@
+#root {
+  max-width: 1280px;
+  margin:0 ;
+  padding: 0;
+  text-align: center;
+}
+
+.form-container {
+  max-width: 400px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+select, input[type="number"] {
+  width: 100%;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  font-size: 18px;
+  background-color: #f76b00bd;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #f76b00bd;
+}
+ul{
+  list-style-type: none;
+}
+.list-item{
+  border: 1px solid #f76b00bd;
+  text-decoration: none;
+  display: flex;
+  justify-content: space-between;
+}
+.transaction-list{
+  max-width: 400px;
+  
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.expenses {
+  background-color: rgb(238, 105, 105); /* Example: Red text for expenses */
+}
+.income {
+  background-color: rgb(85, 199, 85);
+}
+.budget-container{
+  border: 1px solid black;
+}
+.budget{
+  background-color: antiquewhite;
+  height: 50px;
+}
+.chart{
+  border: 1px solid red;
+
+  
+}
+.main-container{
+  display: flex;
+  justify-content:center;
+}
