@@ -7,7 +7,6 @@ function ExpensesForm() {
   const [transactionType, setTransactionType] = useState();
   const [category, setCategory] = useState();
   const [amount, setAmount] = useState("");
-  const [customTransaction, setCustomTransaction] = useState("");
   const [customCategory, setCustomCategory] = useState("");
 
   const handleTransactionType = (e) => {
@@ -15,6 +14,12 @@ function ExpensesForm() {
   };
   const handleCategoryChange = (e) => {
     setCategory(e.target.value);
+    if (e.target.value !== "Add new expense") {
+      setCustomCategory("");
+    }
+  };
+  const handleCustomCategoryChange = (e) => {
+    setCustomCategory(e.target.value);
   };
   const handleAmountChange = (e) => {
     let value = e.target.value;
@@ -27,13 +32,22 @@ function ExpensesForm() {
 
   const submitHandler = (e) => {
     e.preventDefault();
+    const finalCategory =
+      category === "Add new expense" || "Add new income"
+        ? customCategory
+        : category;
     dispatch({
       type: "ADD_TRANSACTION",
-      payload: { type: transactionType, category, amount: amount },
+      payload: {
+        type: transactionType,
+        category: finalCategory,
+        amount: amount,
+      },
     });
     setTransactionType("");
     setCategory("");
     setAmount("");
+    setCustomCategory("");
   };
 
   //conditional rendering depending on transaction type
@@ -55,8 +69,9 @@ function ExpensesForm() {
           "Loan",
           "Entertainment",
           "Gifts",
+          "Add new expense",
         ]
-      : ["Salary", "Investment", "Side Business"];
+      : ["Salary", "Investment", "Side Business", "Add new income"];
   return (
     <div className="form-container">
       <h1>Expense Tracker</h1>
@@ -89,6 +104,17 @@ function ExpensesForm() {
             ))}
           </select>
         </div>
+        {(category === "Add new expense" || category==="Add new income") && (
+          <div className="form-group">
+            <input
+              type="text"
+              placeholder="enter new category"
+              value={customCategory}
+              onChange={handleCustomCategoryChange}
+              required
+            />
+          </div>
+        )}
         <div className="form-group">
           <input
             type="number"
