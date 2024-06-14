@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 
 function ExpensesForm() {
   const { dispatch } = useContext(BudgetContext);
-  const [transactionType, setTransactionType] = useState();
+  const [transactionType, setTransactionType] = useState("");
   const [category, setCategory] = useState();
   const [amount, setAmount] = useState("");
   const [customCategory, setCustomCategory] = useState("");
@@ -33,7 +33,7 @@ function ExpensesForm() {
   const submitHandler = (e) => {
     e.preventDefault();
     const finalCategory =
-      category === "Add new expense" || "Add new income"
+      category === "Add new expense" || category === "Add new income"
         ? customCategory
         : category;
     dispatch({
@@ -41,7 +41,7 @@ function ExpensesForm() {
       payload: {
         type: transactionType,
         category: finalCategory,
-        amount: amount,
+        amount: parseFloat(amount),
       },
     });
     setTransactionType("");
