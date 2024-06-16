@@ -41,7 +41,7 @@ function ExpensesForm() {
       payload: {
         type: transactionType,
         category: finalCategory,
-        amount: parseFloat(amount),
+        amount: parseFloat(amount).toFixed(2),
       },
     });
     setTransactionType("");

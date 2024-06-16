@@ -4,7 +4,15 @@
   padding: 0;
   text-align: center;
 }
-
+.main-container{
+  display: flex;
+  justify-content:center;
+}
+.top-container{
+  display: flex;
+  justify-content: column;
+}
+/* form component */
 .form-container {
   max-width: 400px;
   padding: 20px;
@@ -16,8 +24,8 @@
   margin-bottom: 15px;
 }
 
-select, input[type="number"] {
-  width: 100%;
+select, input{
+  width: 80%;
   padding: 8px;
   font-size: 16px;
   border: 1px solid #ccc;
@@ -60,19 +68,28 @@ ul{
 .income {
   background-color: rgb(85, 199, 85);
 }
-.budget-container{
-  border: 1px solid black;
-}
-.budget{
-  background-color: antiquewhite;
-  height: 50px;
-}
-.chart{
-  border: 1px solid red;
 
-  
+.chart{
+  border: 1px solid grey;
 }
-.main-container{
+
+/* budget component */
+.info-container{
+  border: 2px solid pink;
+}
+.actual-container, .budget-container{
   display: flex;
-  justify-content:center;
+  justify-content: space-between;
+  padding: 1rem;
+}
+.total-container{
+  border: 1px solid grey;
+  border-radius: 10px;
+  width: 300px;
+}
+.positive{
+  background-color: green;
+}
+.negative{
+  background-color: rgb(145, 28, 42);
 }

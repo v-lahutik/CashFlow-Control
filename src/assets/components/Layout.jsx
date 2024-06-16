@@ -8,10 +8,15 @@ import Budget from './Budget'
 function Layout() {
   return (
     <>
-    <Budget />
+    
     <div className='main-container'>
-    <ExpensesList />
+    <div className='top-container'>
     <ExpensesForm />
+    <Budget />
+    </div>
+    
+    <ExpensesList />
+    
     <Charts />
     </div>
     </>
