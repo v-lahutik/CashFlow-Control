@@ -77,6 +77,7 @@ function ExpensesForm() {
       <h1>Expense Tracker</h1>
       <form onSubmit={submitHandler}>
         <div className="form-group">
+          <label htmlFor="transactionType"></label>
           <select
             name="transactionType"
             id="transactionType"
@@ -90,6 +91,7 @@ function ExpensesForm() {
           </select>
         </div>
         <div className="form-group">
+          <label htmlFor="categories"></label>
           <select
             name="categories"
             id="categories"
@@ -106,8 +108,10 @@ function ExpensesForm() {
         </div>
         {(category === "Add new expense" || category==="Add new income") && (
           <div className="form-group">
+            <label htmlFor="customCategory"></label>
             <input
               type="text"
+              id="customCategory"
               placeholder="enter new category"
               value={customCategory}
               onChange={handleCustomCategoryChange}
@@ -116,8 +120,10 @@ function ExpensesForm() {
           </div>
         )}
         <div className="form-group">
+          <label htmlFor="amount"></label>
           <input
             type="number"
+            id="amount"
             placeholder="Amount"
             value={amount}
             onChange={handleAmountChange}

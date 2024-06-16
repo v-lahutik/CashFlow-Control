@@ -1,29 +1,39 @@
+/* main styling */
+body{
+ padding: 0;
+ margin: 0;
+}
 #root {
-  max-width: 1280px;
+  width: 100vw;
   margin:0 ;
   padding: 0;
   text-align: center;
 }
 .main-container{
+  width: 100vw;
   display: flex;
-  justify-content:center;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 .top-container{
   display: flex;
-  justify-content: column;
+  
+}
+.bottom-container{
+  display: flex;
+  justify-content: space-around;
 }
 /* form component */
 .form-container {
-  max-width: 400px;
+  width: 300px;
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 5px;
 }
-
 .form-group {
   margin-bottom: 15px;
 }
-
 select, input{
   width: 80%;
   padding: 8px;
@@ -31,7 +41,6 @@ select, input{
   border: 1px solid #ccc;
   border-radius: 5px;
 }
-
 button {
   width: 100%;
   padding: 10px;
@@ -44,38 +53,48 @@ button {
 }
 
 button:hover {
-  background-color: #f76b00bd;
+  background-color: #8f7561bd;
+}
+/* list component */
+.transaction-list{
+  width: 500px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 ul{
   list-style-type: none;
 }
 .list-item{
-  border: 1px solid #f76b00bd;
   text-decoration: none;
   display: flex;
   justify-content: space-between;
 }
-.transaction-list{
-  max-width: 400px;
-  
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+.filter{
+  display: flex;
+  justify-content: center;
+  border: 1px solid pink
+}
+.filter-form-group{
+  border: 1px solid grey;
+  width: 100px;
+  padding: 3px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 .expenses {
-  background-color: rgb(238, 105, 105); /* Example: Red text for expenses */
+  background-color: rgba(238, 105, 105, 0.506); /* Example: Red text for expenses */
 }
 .income {
-  background-color: rgb(85, 199, 85);
-}
-
-.chart{
-  border: 1px solid grey;
+  background-color: rgba(93, 179, 93, 0.59);
 }
 
 /* budget component */
 .info-container{
-  border: 2px solid pink;
+  width: 100%;
+  border: 2px solid grey;
 }
 .actual-container, .budget-container{
   display: flex;
@@ -92,4 +111,12 @@ ul{
 }
 .negative{
   background-color: rgb(145, 28, 42);
+}
+/* saving tips component */
+.saving-tips{
+  width: 300px;
+}
+/* chart component */
+.chart{
+  border: 1px solid grey;
 }

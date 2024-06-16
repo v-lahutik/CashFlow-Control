@@ -3,7 +3,12 @@ import { BudgetContext } from "../context/Context";
 import { BsTrash } from "react-icons/bs";
 
 function ExpensesList() {
-  const { transactionState, dispatch, displayedTransaction,setDisplayedTransaction } = useContext(BudgetContext);
+  const {
+    transactionState,
+    dispatch,
+    displayedTransaction,
+    setDisplayedTransaction,
+  } = useContext(BudgetContext);
 
   const deleteHandler = (id) => {
     dispatch({ type: "DELETE_TRANSACTION", payload: id });
@@ -16,55 +21,59 @@ function ExpensesList() {
     income: "income",
   };
 
-useEffect(() => {
-  if (filterOption === "all") {
-    setDisplayedTransaction(transactionState);
-  } else {
-    const filteredTransaction = transactionState.filter((transaction) => 
-      transaction.transaction.type === filterOption
-    );
-    setDisplayedTransaction(filteredTransaction);
-  }
-}, [filterOption, transactionState]);
+  useEffect(() => {
+    if (filterOption === "all") {
+      setDisplayedTransaction(transactionState);
+    } else {
+      const filteredTransaction = transactionState.filter(
+        (transaction) => transaction.transaction.type === filterOption
+      );
+      setDisplayedTransaction(filteredTransaction);
+    }
+  }, [filterOption, transactionState]);
 
-
-console.log("displayed tr",displayedTransaction)
-console.log("transaction State",transactionState)
+  console.log("displayed tr", displayedTransaction);
+  console.log("transaction State", transactionState);
 
   return (
     <div className="transaction-list">
       <h2>List</h2>
       <div className="filter">
         <form>
-          <input
-            type="checkbox"
-            id="all"
-            name="all"
-            value={checkboxFilterValue.all}
-            checked={filterOption===checkboxFilterValue.all}
-            onChange={(e)=>setFilterOption(e.target.value)}
-          />
-          <label htmlFor="checkbox">All</label>
-          <input
-            type="checkbox"
-            id="income"
-            name="income"
-            value={checkboxFilterValue.income}
-            checked={filterOption===checkboxFilterValue.income}
-            onChange={(e)=>setFilterOption(e.target.value)}
-          />
-          <label htmlFor="checkbox">Income</label>
-          <input
-            type="checkbox"
-            id="Expenses"
-            name="expenses"
-            value={checkboxFilterValue.expenses}
-            checked={filterOption===checkboxFilterValue.expenses}
-            onChange={(e)=>setFilterOption(e.target.value)}
-          />
-          <label htmlFor="checkbox">Expenses</label>
+          <div className="filter-form-group">
+            <label htmlFor="all">All</label>
+            <input
+              type="checkbox"
+              id="all"
+              name="all"
+              value={checkboxFilterValue.all}
+              checked={filterOption === checkboxFilterValue.all}
+              onChange={(e) => setFilterOption(e.target.value)}
+            />
+          </div>
+          <div className="filter-form-group">
+            <label htmlFor="income">Income</label>
+            <input
+              type="checkbox"
+              id="income"
+              name="income"
+              value={checkboxFilterValue.income}
+              checked={filterOption === checkboxFilterValue.income}
+              onChange={(e) => setFilterOption(e.target.value)}
+            />
+          </div>
+          <div className="filter-form-group">
+            <label htmlFor="expenses">Expenses</label>
+            <input
+              type="checkbox"
+              id="expenses"
+              name="expenses"
+              value={checkboxFilterValue.expenses}
+              checked={filterOption === checkboxFilterValue.expenses}
+              onChange={(e) => setFilterOption(e.target.value)}
+            />
+          </div>
         </form>
-        
       </div>
       <ul>
         {displayedTransaction.map((transaction) => (
