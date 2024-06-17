@@ -15,14 +15,19 @@ body{
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  
 }
 .top-container{
   display: flex;
+  
+  width: 100%;
   
 }
 .bottom-container{
   display: flex;
   justify-content: space-around;
+
+  width: 100%;
 }
 /* form component */
 .form-container {
@@ -120,3 +125,33 @@ ul{
 .chart{
   border: 1px solid grey;
 }
+/* input[type="checkbox"] {
+  width: 3em;
+  height: 3rem;
+  accent-color: green;
+}
+input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  font-size: 2rem;
+  padding: 0.1rem;
+  border: 0.25rem solid green;
+  border-radius: 0.5rem;
+}
+input[type="checkbox"]::before {
+  content: "";
+  width: 1.4rem;
+  height: 1.4rem;
+  clip-path: polygon(20% 0%, 0% 20%, 30% 50%, 0% 80%, 20% 100%, 50% 70%, 80% 100%, 100% 80%, 70% 50%, 100% 20%, 80% 0%, 50% 30%);
+  transform: scale(0);
+  background-color: green;
+}
+input[type="checkbox"]:checked::before {
+  transform: scale(1);
+}
+input[type="checkbox"]:hover {
+  color: black;
+} */

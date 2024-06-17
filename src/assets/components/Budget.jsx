@@ -1,38 +1,36 @@
-import React, { useContext, useState } from "react";
+import React, { useContext} from "react";
 import { BudgetContext } from "../context/Context";
 
 function Budget() {
-  const { transactionState, displayedTransaction, setDisplayedTransaction } =
-    useContext(BudgetContext);
+  const { state, dispatch } = useContext(BudgetContext);
 
-  const [expensesBudget, setExpensesBudget] = useState("");
-  const [incomeBudget, setIncomeBudget] = useState("");
 //submit handlers
   const incomeBudgetHandler = (e) => {
-    setIncomeBudget(e.target.value);
+      dispatch({type: "UPDATE_INCOME_BUDGET", payload: parseFloat(e.target.value)})
   };
   const expensesBudgetHandler = (e) => {
-    setExpensesBudget(-Math.abs(e.target.value));
+    dispatch({type: "UPDATE_EXPENSES_BUDGET", payload: parseFloat(e.target.value)})
   };
 //functions
-  const totalAmount = transactionState.reduce((acc, trans) => {
+console.log("state", state)
+  const totalAmount = state.transactions.reduce((acc, trans) => {
     return (acc += parseFloat(trans.transaction.amount));
   }, 0).toFixed(2);
-  const totalIncome = transactionState.reduce((acc, trans) => {
+  const totalIncome = state.transactions.reduce((acc, trans) => {
     if (trans.transaction.type === "income") {
       return (acc += parseFloat(trans.transaction.amount));
     }
     return acc;
   }, 0).toFixed(2);
 
-  const totalExpense = transactionState.reduce((acc, trans) => {
+  const totalExpense = state.transactions.reduce((acc, trans) => {
     if (trans.transaction.type === "expenses") {
       return (acc += parseFloat(trans.transaction.amount));
     }
     return acc;
   }, 0).toFixed(2);
 
-  const savingGoal=(incomeBudget-Math.abs(expensesBudget)).toFixed(2)
+  const savingGoal=(state.incomeBudget-Math.abs(state.expensesBudget)).toFixed(2)
   const difference = (savingGoal-totalAmount).toFixed(2);
   
   return (
@@ -56,13 +54,13 @@ function Budget() {
       <div className="budget-container">
         <div className="total-container">
           <p>Your income budget</p>
-           <h3>€ {parseFloat(incomeBudget||0).toFixed(2)}</h3>
+           <h3>€ {parseFloat(state.incomeBudget||0).toFixed(2)}</h3>
           <form>
             <input
               className="budget"
               type="number"
               placeholder="Set your budget here..."
-              value={incomeBudget}
+              value={state.incomeBudget}
               onChange={incomeBudgetHandler}
               required
             />
@@ -70,13 +68,13 @@ function Budget() {
         </div>
         <div className="total-container">
           <p>Your expenses budget</p>
-          <h3>€{parseFloat(expensesBudget||0).toFixed(2)}</h3>
+          <h3>€{parseFloat(state.expensesBudget||0).toFixed(2)}</h3>
           <form>
             <input
               className="budget"
               type="number"
               placeholder="Set your budget here..."
-              value={expensesBudget}
+              value={state.expensesBudget}
               onChange={expensesBudgetHandler}
               required
             />

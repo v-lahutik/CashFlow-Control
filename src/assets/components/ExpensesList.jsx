@@ -4,7 +4,7 @@ import { BsTrash } from "react-icons/bs";
 
 function ExpensesList() {
   const {
-    transactionState,
+    state,
     dispatch,
     displayedTransaction,
     setDisplayedTransaction,
@@ -23,17 +23,17 @@ function ExpensesList() {
 
   useEffect(() => {
     if (filterOption === "all") {
-      setDisplayedTransaction(transactionState);
+      setDisplayedTransaction(state.transactions);
     } else {
-      const filteredTransaction = transactionState.filter(
+      const filteredTransaction = state.transactions.filter(
         (transaction) => transaction.transaction.type === filterOption
       );
       setDisplayedTransaction(filteredTransaction);
     }
-  }, [filterOption, transactionState]);
+  }, [filterOption, state.transactions]);
 
   console.log("displayed tr", displayedTransaction);
-  console.log("transaction State", transactionState);
+  console.log("transaction State", state);
 
   return (
     <div className="transaction-list">
