@@ -81,6 +81,7 @@ function ExpensesList() {
             className={`list-item ${transaction.transaction.type}`}
             key={transaction.id}
           >
+            <span>{transaction.transaction.date}</span>
             <span>{transaction.transaction.type}</span>
             <span>{transaction.transaction.category}</span>
             <span>{transaction.transaction.amount}</span>

@@ -1,7 +1,8 @@
-import './App.css'
+ import './App.css'
+import './index.css'
 import Layout from './assets/components/Layout'
 import { BudgetProvider} from './assets/context/Context'
-import { useEffect } from 'react'
+
 
 function App() {
   // useEffect(()=>{
@@ -10,9 +11,13 @@ function App() {
   //   }
   // })
   return (
+    <>
+    <h1 className="text-3xl font-bold ">
+    Empower Your Finances: Your Budget, Your Future!
+  </h1>
     <BudgetProvider>
      <Layout />
-   </BudgetProvider>
+   </BudgetProvider></>
   )
 }
 

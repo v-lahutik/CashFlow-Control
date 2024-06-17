@@ -12,8 +12,8 @@ const getInitialTransactions = () => {
     const savedState = localStorage.getItem('state');
     return savedState ? JSON.parse(savedState) :
         {transactions: [],
-        incomeBudget: 0,
-        expensesBudget: 0};
+        incomeBudget: "",
+        expensesBudget: ""};
   };
 
 export const BudgetContext = createContext(null)
