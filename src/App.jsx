@@ -12,9 +12,9 @@ function App() {
   // })
   return (
     <>
-    <h1 className="text-3xl font-bold ">
+    {/* <h1 className="text-3xl font-bold ">
     Empower Your Finances: Your Budget, Your Future!
-  </h1>
+  </h1> */}
     <BudgetProvider>
      <Layout />
    </BudgetProvider></>

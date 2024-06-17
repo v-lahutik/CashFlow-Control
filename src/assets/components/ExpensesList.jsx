@@ -36,42 +36,59 @@ function ExpensesList() {
   console.log("transaction State", state);
 
   return (
+    <>
+   
     <div className="transaction-list">
       <h2>List</h2>
-      <div className="filter">
+      <div>
         <form>
-          <div className="filter-form-group">
-            <label htmlFor="all">All</label>
-            <input
-              type="checkbox"
-              id="all"
-              name="all"
-              value={checkboxFilterValue.all}
-              checked={filterOption === checkboxFilterValue.all}
-              onChange={(e) => setFilterOption(e.target.value)}
-            />
-          </div>
-          <div className="filter-form-group">
-            <label htmlFor="income">Income</label>
-            <input
-              type="checkbox"
-              id="income"
-              name="income"
-              value={checkboxFilterValue.income}
-              checked={filterOption === checkboxFilterValue.income}
-              onChange={(e) => setFilterOption(e.target.value)}
-            />
-          </div>
-          <div className="filter-form-group">
-            <label htmlFor="expenses">Expenses</label>
-            <input
-              type="checkbox"
-              id="expenses"
-              name="expenses"
-              value={checkboxFilterValue.expenses}
-              checked={filterOption === checkboxFilterValue.expenses}
-              onChange={(e) => setFilterOption(e.target.value)}
-            />
+         <div className="grid grid-cols-1 gap-4 text-center sm:grid-cols-3">
+            <label    
+                className="block w-full cursor-pointer rounded-lg border border-gray-200 p-3 text-gray-600 hover:border-black has-[:checked]:border-black has-[:checked]:bg-black has-[:checked]:text-white"
+                tabIndex="0"
+              >
+              <input
+                  type="radio"
+                  className="sr-only"
+                  name="transactionType"
+                  id="all"
+                  tabIndex="-1"
+                  value="all"
+                  checked={filterOption === checkboxFilterValue.all}
+                  onChange={(e) => setFilterOption(e.target.value)}
+                />
+                <span className="text-sm"> All</span></label>
+                <label    
+                className="block w-full cursor-pointer rounded-lg border border-gray-200 p-3 text-gray-600 hover:border-black has-[:checked]:border-black has-[:checked]:bg-black has-[:checked]:text-white"
+                tabIndex="0"
+              >
+              <input
+                  type="radio"
+                  className="sr-only"
+                  name="transactionType"
+                  id="income"
+                  tabIndex="-1"
+                  value="income"
+                  checked={filterOption === checkboxFilterValue.income}
+                  onChange={(e) => setFilterOption(e.target.value)}
+                />
+                <span className="text-sm">Income</span></label>
+                <label    
+                className="block w-full cursor-pointer rounded-lg border border-gray-200 p-3 text-gray-600 hover:border-black has-[:checked]:border-black has-[:checked]:bg-black has-[:checked]:text-white"
+                tabIndex="0"
+              >
+              <input
+                  type="radio"
+                  className="sr-only"
+                  name="transactionType"
+                  id="expenses"
+                  tabIndex="-1"
+                  value="expenses"
+                  checked={filterOption === checkboxFilterValue.expenses}
+                  onChange={(e) => setFilterOption(e.target.value)}
+                />
+                <span className="text-sm"> Expenses</span></label>
+            
           </div>
         </form>
       </div>
@@ -91,7 +108,7 @@ function ExpensesList() {
           </li>
         ))}
       </ul>
-    </div>
+    </div> </>
   );
 }
 

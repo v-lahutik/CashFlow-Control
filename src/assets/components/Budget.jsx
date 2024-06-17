@@ -1,6 +1,10 @@
 import React, { useContext } from "react";
 import { BudgetContext } from "../context/Context";
-import { GiMoneyStack } from "react-icons/gi";
+import { GiMoneyStack,GiReceiveMoney,GiPayMoney,GiTakeMyMoney,GiCash } from "react-icons/gi";
+import { BsPiggyBank } from "react-icons/bs";
+import { PiChartLineDown, PiChartLineUp } from "react-icons/pi";
+
+
 
 function Budget() {
   const { state, dispatch } = useContext(BudgetContext);
@@ -55,7 +59,7 @@ function Budget() {
           <article className="flex items-end justify-between rounded-lg border border-gray-100 bg-white p-6">
             <div className="flex items-center gap-4">
               <span className="hidden rounded-full bg-gray-100 p-3 text-gray-600 sm:block icon">
-                <GiMoneyStack />
+              <GiReceiveMoney />
               </span>
 
               <div>
@@ -69,7 +73,7 @@ function Budget() {
           <article className="flex items-end justify-between rounded-lg border border-gray-100 bg-white p-6">
             <div className="flex items-center gap-4">
               <span className="hidden rounded-full bg-gray-100 p-3 text-gray-600 sm:block icon">
-                <GiMoneyStack />
+              <GiPayMoney />
               </span>
 
               <div>
@@ -84,7 +88,7 @@ function Budget() {
           <article className="flex items-end justify-between rounded-lg border border-gray-100 bg-white p-6">
             <div className="flex items-center gap-4">
               <span className="hidden rounded-full bg-gray-100 p-3 text-gray-600 sm:block icon">
-                <GiMoneyStack />
+              <GiCash />
               </span>
 
               <div>
@@ -110,7 +114,7 @@ function Budget() {
                 </p>
                 <label
                   htmlFor="incomeBudget"
-                  className="relative block overflow-hidden border-b border-gray-200 bg-transparent pt-3 focus-within:border-blue-600"
+                  className="relative block overflow-hidden border-b border-gray-200 bg-transparent pt-3 focus-within:border-green-300"
                 >
                   <input
                     value={state.incomeBudget}
@@ -128,7 +132,7 @@ function Budget() {
           <article className="flex items-end justify-between rounded-lg border border-gray-100 bg-white p-6">
             <div className="flex items-center gap-4">
               <span className="hidden rounded-full bg-gray-100 p-3 text-gray-600 sm:block icon">
-                <GiMoneyStack />
+              <GiTakeMyMoney />
               </span>
 
               <div>
@@ -138,7 +142,7 @@ function Budget() {
                 </p>
                 <label
                   htmlFor="incomeBudget"
-                  className="relative block overflow-hidden border-b border-gray-200 bg-transparent pt-3 focus-within:border-blue-600"
+                  className="relative block overflow-hidden border-b border-gray-200 bg-transparent pt-3 focus-within:border-green-300"
                 >
                   <input
                     value={state.expensesBudget}
@@ -157,7 +161,7 @@ function Budget() {
           <article className="flex items-end justify-between rounded-lg border border-gray-100 bg-white p-6">
             <div className="flex items-center gap-4">
               <span className="hidden rounded-full bg-gray-100 p-3 text-gray-600 sm:block icon">
-                <GiMoneyStack />
+              <BsPiggyBank />
               </span>
 
               <div>
@@ -176,7 +180,9 @@ function Budget() {
             }`}>
             <div className="flex items-center gap-4">
               <span className="hidden rounded-full bg-gray-100 p-3 text-gray-600 sm:block icon">
-                <GiMoneyStack />
+              <PiChartLineDown />
+              <PiChartLineUp />
+
               </span>
 
               <div>
