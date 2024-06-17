@@ -1,9 +1,22 @@
 import React from 'react'
+import {useState, useEffect} from 'react'
+import tipsArray from '../Data/TipsData';
 
-function SavingTips() {
+
+const SavingTips = () => {
+  const [tip, setTip] = useState('');
+
+  useEffect(() => {
+    const randomIndex = Math.floor(Math.random() * tipsArray.length);
+    setTip(tipsArray[randomIndex]);
+  }, []);
+
   return (
-    <div className='saving-tips'>Saving Tips</div>
-  )
-}
+    <div>
+      <h2>Random Saving Tip</h2>
+      <p>{tip}</p>
+    </div>
+  );
+};
 
-export default SavingTips
+export default SavingTips;
