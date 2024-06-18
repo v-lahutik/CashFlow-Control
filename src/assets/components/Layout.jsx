@@ -13,9 +13,12 @@ function Layout() {
           <Budget />
         </div>
         <div className="bottom-container">
+         
           <ExpensesList />
-          <SavingTips />
           <Charts />
+           <SavingTips />
+          
+          
         </div>
       </div>
     </>

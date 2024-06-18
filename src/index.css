@@ -3,6 +3,15 @@
 @tailwind utilities;
 @tailwind forms;
 
+body{
+ padding: 0;
+ margin: 0;
+}
+#root {
+  width: 100vw;
+  margin:0 ;
+  padding: 0;
+}
 .icon {
   font-size: 1.5em;
 }
@@ -28,3 +37,20 @@
   .negative, .expenses{
     background-color: rgb(253 164 175);;
   }
+  .top-container{
+  display: flex;
+  
+  width: 100%;
+  
+}
+.bottom-container{
+  display: flex;
+  justify-content: space-around;
+
+  width: 100%;
+}
+.transaction-wrapper{
+  width: 20px;
+  height: 20px;
+  border-radius: 30px;
+}
