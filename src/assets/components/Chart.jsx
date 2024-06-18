@@ -25,19 +25,32 @@ function Charts() {
   };
 
   // Aggregate the transactions
-  const { labels, data } = useMemo(() => aggregateTransactions(displayedTransaction), [displayedTransaction]);
+  const { labels, data } = useMemo(
+    () => aggregateTransactions(displayedTransaction),
+    [displayedTransaction]
+  );
 
   const colorPalette = [
-    "#FF6384", // Red
-    "#36A2EB", // Blue
-    "#FFCE56", // Yellow
-    "#4BC0C0", // Cyan
-    "#9966FF", // Purple
-    "#FF9F40", // Orange
-    "#1AFFD5", // Aqua
-    "#FF74E6", // Pink
-    "#6BF442", // Lime
-    "#F49242", // Amber
+    "#FFB3BA", // Light Pink
+    "#FFDFBA", // Light Orange
+    "#FFFFBA", // Light Yellow
+    "#BAFFC9", // Light Green
+    "#BAE1FF", // Light Blue
+    "#D1C4E9", // Lavender
+    "#FFD1DC", // Pink Blush
+    "#FFCCCB", // Misty Rose
+    "#FADADD", // Pale Pink
+    "#C1E1C1", // Mint Green
+    "#F5D6D6", // Blush Pink
+    "#FDE2E2", // Light Coral
+    "#F0D9FF", // Mauve
+    "#FDE3A7", // Pale Peach
+    "#B4F8C8", // Mint
+    "#E4C1F9", // Thistle
+    "#FFCCE5", // Light Magenta
+    "#FFDFD3", // Apricot
+    "#C3FBD8", // Light Mint
+    "#F8C3A0", // Pale Apricot
   ];
   const backgroundColors = colorPalette.slice(0, labels.length);
 
@@ -56,8 +69,9 @@ function Charts() {
     responsive: true,
     plugins: {
       legend: {
-        display: data.length > 5 ? false : true,
-        position: data.length > 5 ? undefined : "bottom"
+        display: true,
+        // display: data.length > 5 ? false : true,
+        // position: data.length > 5 ? undefined : "bottom",
       },
       tooltip: {
         callbacks: {
@@ -122,11 +136,17 @@ function Charts() {
   };
 
   return (
-    <div className="chart">
+    <article className="rounded-s bg-white p-4 ring ring-indigo-50 sm:p-6 lg:p-8 5/6">
+    
       <button onClick={toggleChart}>
+      <strong className="rounded border border-green-300 bg-green-300 px-3 py-1.5 text-[12px] font-medium text-grey-500">
         {chartType === "pie" ? "Click for bar chart" : "Click for pie chart"}
-      </button>
-      <h2>{chartType === "pie" ? "Pie chart" : "Bar chart"}</h2>
+      </strong></button>
+
+      <h3 className="mt-4 text-lg font-medium sm:text-xl text-center">
+        <p>{chartType === "pie" ? "Pie chart" : "Bar chart"} </p>
+      </h3>
+
       {chartType === "pie" ? (
         <Chart
           type="pie"
@@ -137,7 +157,7 @@ function Charts() {
       ) : (
         <Chart type="bar" data={chartData} options={barChartOptions} />
       )}
-    </div>
+    </article>
   );
 }
 

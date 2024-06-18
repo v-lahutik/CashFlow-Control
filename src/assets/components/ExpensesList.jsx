@@ -38,8 +38,16 @@ function ExpensesList() {
 
   return (
     <>
-      <div className=" p-4 w-6/12 min-h-36">
-        <h2 className="text-xl font-semibold mb-4 text-center">Transaction List</h2>
+      <div className=" p-4 w-6/12 min-h-36 rounded-s bg-white p-4 ring ring-indigo-50">
+      <div className="mx-auto max-w-lg text-center">
+          <h2 className="text-2xl font-bold sm:text-3xl">
+            Transaction List
+          </h2>
+          <p className="mt-4 text-gray-500 m-7">
+          Select the buttons below to filter your results.
+          </p>
+        </div>
+        
         <form className="mb-4">
            <div className="flex justify-around items-center text-center gap-3">
             <label className="block w-4/12 cursor-pointer rounded-lg border border-gray-200 p-3 text-gray-600 hover:border-black has-[:checked]:border-black has-[:checked]:bg-black has-[:checked]:text-white">
@@ -82,7 +90,7 @@ function ExpensesList() {
         </form>
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white border border-gray-200">
-            <thead className="bg-green-300">
+            <thead className="bg-gradient-to-r from-green-300 to-blue-300">
               <tr>
                 <th className="text-left px-4 py-2 border-b">Date</th>
                 <th className="text-left px-4 py-2 border-b">Type</th>

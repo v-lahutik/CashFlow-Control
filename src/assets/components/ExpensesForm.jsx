@@ -79,6 +79,7 @@ function ExpensesForm() {
       : ["Salary", "Investment", "Side Business", "Add new income"];
   return (
     <>
+    
       <div className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-lg text-center">
           <h1 className="text-2xl font-bold sm:text-3xl">
@@ -208,7 +209,7 @@ function ExpensesForm() {
           <div className="flex items-center justify-center">
             <button
               type="submit"
-              className="inline-block rounded-lg bg-green-300 px-5 py-3 text-sm font-medium text-grey-500"
+              className="inline-block rounded-lg bg-green-300 border-2 border-blue-300 px-5 py-3 text-sm font-medium text-grey-500 w-36"
             >
               Add
             </button>

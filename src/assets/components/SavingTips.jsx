@@ -31,7 +31,7 @@ const SavingTips = () => {
           </div>
 
           <div>
-            <strong className="rounded border border-green-300 bg-green-300 px-3 py-1.5 text-[10px] font-medium text-grey-500">
+            <strong className="rounded border border-green-300 bg-green-300 px-3 py-1.5 text-[12px] font-medium text-grey-500">
               Tip number # {tip.length}
             </strong>
 
@@ -45,9 +45,10 @@ const SavingTips = () => {
               <div className="flex items-center gap-1 text-gray-500">
                 <FaLongArrowAltRight />
 
-                <a className="text-xs font-medium underline hover:text-gray-700">
+                <a href="https://www.nerdwallet.com/article/finance/how-to-save-money"target="blank" className="text-xs font-medium underline hover:text-gray-700">
                   Find out more here
                 </a>
+               
               </div>
             </div>
           </div>

@@ -15,18 +15,18 @@ body{
 .icon {
   font-size: 1.5em;
 }
-.info-container {
-  width: 100%;
-  border: 1px solid grey;
+.main-container{
+  padding: 2rem;
 }
+
 .actual-container,
 .budget-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   padding: 1rem;
 }
 .conclusion-container{
-    border: 1px solid grey;
+    
     border-radius: 10px;
     width: 300px;
     margin: auto;
@@ -39,14 +39,22 @@ body{
   }
   .top-container{
   display: flex;
-  
   width: 100%;
+  
   
 }
 .bottom-container{
   display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 2rem;
+}
+.right-container{
+  width: 40%;
+}
+.left-container{
+  display: flex;
   justify-content: space-around;
-
   width: 100%;
 }
 .transaction-wrapper{
