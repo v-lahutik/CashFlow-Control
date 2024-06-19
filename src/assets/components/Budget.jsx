@@ -54,7 +54,10 @@ function Budget() {
   const savingGoal = (
     state.incomeBudget - Math.abs(state.expensesBudget)
   ).toFixed(2);
+
   const difference = (savingGoal - totalAmount).toFixed(2);
+  
+
 
   return (
     <div className="bg-gradient-to-r from-green-300 to-blue-300  rounded border rounded-s  p-4 ring ring-indigo-50 sm:p-6 lg:p-8 h-full w-full">
@@ -201,9 +204,9 @@ function Budget() {
             </span>
             <div>
               <p className="text-sm text-gray-500">
-                {difference < 1
+                {difference <= 1
                   ? "Positive balance"
-                  : difference > 1
+                  : difference >= 1
                   ? "Negative balance"
                   : "Neutral balance"}
               </p>

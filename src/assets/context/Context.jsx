@@ -41,6 +41,14 @@ switch(type){
         saveToLocalStorage(newState);
         return newState;
     }
+    case "EDIT_TRANSACTION": {
+        const updatedTransaction = state.transactions.map(transaction =>
+            transaction.id === payload.id ? { ...transaction, ...payload } : transaction
+        );
+        const newState = { ...state, transactions: updatedTransaction };
+        saveToLocalStorage(newState);
+        return newState;
+    }
      case "UPDATE_INCOME_BUDGET": {
         const newState= {...state, incomeBudget: payload}
         saveToLocalStorage(newState)

@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { BudgetContext } from "../context/Context";
-import { BsTrash } from "react-icons/bs";
+import { BsTrash, BsPencil  } from "react-icons/bs";
 import { PiChartLineUp, PiChartLineDown} from "react-icons/pi";
 
 function ExpensesList() {
@@ -14,6 +14,10 @@ function ExpensesList() {
   const deleteHandler = (id) => {
     dispatch({ type: "DELETE_TRANSACTION", payload: id });
   };
+  // const editHandler= ()=>{
+  //   e.preventDefault()
+  //   dispatch({type: "EDIT_TRANSACTION", payload: })
+  // }
   const [filterOption, setFilterOption] = useState("all");
 
   const checkboxFilterValue = {
@@ -120,6 +124,7 @@ function ExpensesList() {
                     <button onClick={() => deleteHandler(transaction.id)}
                     ><BsTrash />
                     </button>
+                    <button onClick={()=>editHandler(transaction.id)}><BsPencil /></button>
                   </td>                      
                 </tr>
               ))}
