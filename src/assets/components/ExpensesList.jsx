@@ -124,7 +124,7 @@ function ExpensesList() {
                     <button onClick={() => deleteHandler(transaction.id)}
                     ><BsTrash />
                     </button>
-                    <button onClick={()=>editHandler(transaction.id)}><BsPencil /></button>
+                    {/* <button onClick={()=>editHandler(transaction.id)}><BsPencil /></button> */}
                   </td>                      
                 </tr>
               ))}
