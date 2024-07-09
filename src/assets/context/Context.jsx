@@ -25,8 +25,7 @@ const {type, payload}=action
 
 switch(type){
     case "ADD_TRANSACTION": {
-        console.log("state", state);
-        console.log("payload", payload);
+       
         // Add new transaction and save to local storage
         const newState = {...state, transactions:[...state.transactions, {id: uuidv4(), transaction: payload}]};
         saveToLocalStorage(newState);

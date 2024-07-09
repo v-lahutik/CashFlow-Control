@@ -37,8 +37,7 @@ function ExpensesList() {
     }
   }, [filterOption, state.transactions]);
 
-  console.log("displayed tr", displayedTransaction);
-  console.log("transaction State", state);
+ 
 
   return (
     <>

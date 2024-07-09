@@ -27,7 +27,7 @@ function Budget() {
     });
   };
   //functions
-  console.log("state", state);
+  
   const totalAmount = state.transactions
     .reduce((acc, trans) => {
       return (acc += parseFloat(trans.transaction.amount));
