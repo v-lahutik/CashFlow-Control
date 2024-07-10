@@ -3,61 +3,30 @@
 @tailwind utilities;
 @tailwind forms;
 
-body{
- padding: 0;
- margin: 0;
-}
-#root {
-  width: 100vw;
-  margin:0 ;
-  padding: 0;
-}
 .icon {
   font-size: 1.5em;
 }
-.main-container{
-  padding: 2rem;
-}
-
 .actual-container,
 .budget-container {
   display: flex;
   justify-content: space-around;
   padding: 1rem;
 }
-.conclusion-container{
-    
-    border-radius: 10px;
-    width: 300px;
-    margin: auto;
-  }
-  .positive, .income{
-    background-color: rgb(134 239 172);;
-  }
-  .negative, .expenses{
-    background-color: rgb(253 164 175);;
-  }
-  .top-container{
-  display: flex;
-  width: 100%;
-  
-  
+.conclusion-container {
+  border-radius: 10px;
+  width: 300px;
+  margin: auto;
 }
-.bottom-container{
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  margin-top: 2rem;
+.positive,
+.income {
+  background-color: rgb(134 239 172);
 }
-.right-container{
-  width: 40%;
+.negative,
+.expenses {
+  background-color: rgb(253 164 175);
 }
-.left-container{
-  display: flex;
-  justify-content: space-around;
-  width: 100%;
-}
-.transaction-wrapper{
+
+.transaction-wrapper {
   width: 20px;
   height: 20px;
   border-radius: 30px;

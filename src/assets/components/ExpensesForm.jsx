@@ -80,8 +80,8 @@ function ExpensesForm() {
   return (
     <>
     
-      <div className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-lg text-center">
+    <div className="bg-white rounded-lg p-4 ring ring-indigo-50 sm:p-6 lg:p-8 w-30 max-w-screen-xl mx-auto">
+        <div className="text-center">
           <h1 className="text-2xl font-bold sm:text-3xl">
             Start logging your transactions
           </h1>
@@ -216,109 +216,6 @@ function ExpensesForm() {
           </div>
         </form>
       </div>
-      {/* OLD one */}
-
-      {/* <div className="form-container">
-        <h1>Expense Tracker</h1>
-        <form onSubmit={submitHandler}>
-          <div className="form-group">
-            <label htmlFor="transactionType"></label>
-            <select
-              name="transactionType"
-              id="transactionType"
-              value={transactionType}
-              onChange={handleTransactionType}
-              required
-            >
-              <option value="">Transaction type</option>
-              <option value="income">Income</option>
-              <option value="expenses">Expenses</option>
-            </select>
-          </div>
-          <div className="mb-4">
-           
-            <div className="mt-1">
-              <label className="inline-flex items-center">
-                <input
-                  type="radio"
-                  className="form-radio"
-                  name="transactionType"
-                  value="income"
-                  checked={transactionType === "income"}
-                  onChange={handleTransactionType}
-                  required
-                />
-                <span className="ml-2">Income</span>
-              </label>
-              <label className="inline-flex items-center ml-6">
-                <input
-                  type="radio"
-                  className="form-radio"
-                  name="transactionType"
-                  value="expenses"
-                  checked={transactionType === "expenses"}
-                  onChange={handleTransactionType}
-                  required
-                />
-                <span className="ml-2">Expenses</span>
-              </label>
-            </div>
-          </div>
-          <div className="form-group">
-            <label htmlFor="categories"></label>
-            <select
-              name="categories"
-              id="categories"
-              onChange={handleCategoryChange}
-              required
-            >
-              <option value="">Category</option>
-              {categories.map((category) => (
-                <option key={category} value={category}>
-                  {category}
-                </option>
-              ))}
-            </select>
-          </div>
-          {(category === "Add new expense" ||
-            category === "Add new income") && (
-            <div className="form-group">
-              <label htmlFor="customCategory"></label>
-              <input
-                type="text"
-                id="customCategory"
-                placeholder="enter new category"
-                value={customCategory}
-                onChange={handleCustomCategoryChange}
-                required
-              />
-            </div>
-          )}
-          <div className="form-group">
-            <label htmlFor="date"></label>
-            <input
-              type="date"
-              name="date"
-              id="date"
-              value={date}
-              onChange={handleDateChange}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="amount"></label>
-            <input
-              type="number"
-              id="amount"
-              placeholder="Amount"
-              value={amount}
-              onChange={handleAmountChange}
-              required
-            />
-          </div>
-          <button type="submit">Add</button>
-        </form>
-      </div> */}
     </>
   );
 }

@@ -136,7 +136,7 @@ function Charts() {
   };
 
   return (
-    <article className="rounded-s bg-white p-4 ring ring-indigo-50 sm:p-6 lg:p-8 5/6">
+    <article className="rounded-s bg-white p-4 ring ring-indigo-50 sm:p-6 lg:p-8 w-full max-w-screen-xl mx-auto">
     
       <button onClick={toggleChart}>
       <strong className="rounded border border-green-300 bg-green-300 px-3 py-1.5 text-[12px] font-medium text-grey-500">

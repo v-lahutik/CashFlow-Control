@@ -41,7 +41,7 @@ function ExpensesList() {
 
   return (
     <>
-      <div className=" p-4 w-6/12 min-h-36 rounded-s bg-white p-4 ring ring-indigo-50">
+      <div className="bg-white rounded-s p-4 ring ring-indigo-50 w-full max-w-screen-xl mx-auto">
       <div className="mx-auto max-w-lg text-center">
           <h2 className="text-2xl font-bold sm:text-3xl">
             Transaction List
