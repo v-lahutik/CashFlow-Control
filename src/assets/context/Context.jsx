@@ -18,7 +18,6 @@ const getInitialTransactions = () => {
 
 export const BudgetContext = createContext(null)
 
-
 export const transactionReducer = (state, action)=>{
 
 const {type, payload}=action

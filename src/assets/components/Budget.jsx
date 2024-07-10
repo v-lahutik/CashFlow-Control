@@ -23,11 +23,11 @@ function Budget() {
   const expensesBudgetHandler = (e) => {
     dispatch({
       type: "UPDATE_EXPENSES_BUDGET",
-      payload: parseFloat(e.target.value),
+      payload: -Math.abs(e.target.value),
     });
   };
   //functions
-  
+  console.log("state", state);
   const totalAmount = state.transactions
     .reduce((acc, trans) => {
       return (acc += parseFloat(trans.transaction.amount));
@@ -55,8 +55,9 @@ function Budget() {
     state.incomeBudget - Math.abs(state.expensesBudget)
   ).toFixed(2);
 
-  const difference = (savingGoal - totalAmount).toFixed(2);
+  const difference = (totalAmount - savingGoal).toFixed(2);
   
+console.log("difference", )
 
 
   return (
@@ -180,7 +181,7 @@ function Budget() {
             </span>
 
             <div>
-              <p className="text-sm text-gray-500">Total balance</p>
+              <p className="text-sm text-gray-500">Actual balance</p>
               <p className="text-2xl font-medium text-gray-900">
                 €{totalAmount}
               </p>
@@ -195,24 +196,25 @@ function Budget() {
       <div className="conclusion-container">
         <article
           className={`flex items-center justify-between rounded-lg border-2 bg-white p-6 h-36 ${
-            difference < 1 ? "border-green-300" : "border-red-300"
+            difference < 1 ? "border-red-300" : "border-green-300"
           }`}
         >
           <div className="flex items-center gap-4">
             <span className="hidden rounded-full p-3 text-gray-600 sm:block icon bg-gray-100 ">
-              {difference < 1 ? <PiChartLineUp /> : <PiChartLineDown />}
+              {difference < 1 ? <PiChartLineDown /> : <PiChartLineUp />}
             </span>
             <div>
               <p className="text-sm text-gray-500">
                 {difference <= 1
-                  ? "Positive balance"
+                  ? "You spent "
                   : difference >= 1
-                  ? "Negative balance"
+                  ? "You saved"
                   : "Neutral balance"}
               </p>
               <p className="text-2xl font-medium text-gray-900">
                 € {difference}
               </p>
+              <p className="text-sm text-gray-500">more than your goal</p>
             </div>
           </div>
         </article>
