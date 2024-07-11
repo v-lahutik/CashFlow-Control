@@ -13,7 +13,6 @@ import { PiChartLineDown, PiChartLineUp } from "react-icons/pi";
 function Budget() {
   const { state, dispatch } = useContext(BudgetContext);
 
-  //submit handlers
   const incomeBudgetHandler = (e) => {
     dispatch({
       type: "UPDATE_INCOME_BUDGET",
@@ -26,8 +25,7 @@ function Budget() {
       payload: -Math.abs(e.target.value),
     });
   };
-  //functions
-  console.log("state", state);
+
   const totalAmount = state.transactions
     .reduce((acc, trans) => {
       return (acc += parseFloat(trans.transaction.amount));
@@ -57,9 +55,6 @@ function Budget() {
 
   const difference = (totalAmount - savingGoal).toFixed(2);
   
-console.log("difference", )
-
-
   return (
     <div className="bg-gradient-to-r from-green-300 to-blue-300 rounded-lg border border-gray-100 p-4 ring ring-indigo-50 sm:p-6 lg:p-8 w-full max-w-screen-xl mx-auto">
     <p className="mt-1 text-sm text-gray-700 w-74 text-center p-3">
