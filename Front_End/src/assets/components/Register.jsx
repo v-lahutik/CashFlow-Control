@@ -1,7 +1,36 @@
 import React from 'react'
-
+import { useState } from 'react'
+import axios from 'axios'
 
 function Register() {
+  const [user, setUser] = useState({ fullName: "", email: "", password: "" });
+  const [errors, setErrors] = useState({}); 
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios({
+        url: "http://localhost:5000/users/register",
+        method: "POST",
+        data: user,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log(res.data); 
+    } catch (error) {
+      if (error.response) {
+        setErrors({ ...errors, res: error.response.data.errors[0].msg });
+        console.log(error.response.data.errors[0].msg);
+      } else {
+        console.log("An unexpected error occurred:", error.message); 
+      }
+    }
+  };
+
+  const changeHandler = (e) => {
+    setUser({ ...user, [e.target.name]: e.target.value }); 
+  };
   return (
     <>
   
@@ -18,7 +47,7 @@ function Register() {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form action="#" method="POST" className="space-y-6">
+          <form action="#" method="POST" className="space-y-6" onSubmit={submitHandler}>
           <div>
               <div className="flex items-center justify-between">
                 <label htmlFor="fullName" className="block text-sm font-medium leading-6 text-gray-900">
@@ -34,6 +63,7 @@ function Register() {
                   required
                   autoComplete="fullName"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                onChange={changeHandler}
                 />
               </div>
             </div>
@@ -49,6 +79,7 @@ function Register() {
                   required
                   autoComplete="email"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  onChange={changeHandler}
                 />
               </div>
             </div>
@@ -68,6 +99,7 @@ function Register() {
                   required
                   autoComplete="current-password"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                onChange={changeHandler}
                 />
               </div>
             </div>
