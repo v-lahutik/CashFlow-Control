@@ -8,7 +8,7 @@ import Charts from './Charts.jsx'
 
 function Home() {
   return (
-    <div className="main-container p-4 sm:p-8 lg:p-12">
+    <div className="main-container bg-gray-100  p-2 sm:p-4 lg:p-6">
     <div className="top-container flex flex-col sm:flex-row gap-4">
           <ExpensesForm />
           <Budget />
