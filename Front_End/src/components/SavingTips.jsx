@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import tipsArray from "../Data/TipsData";
+import tipsArray from "../Data/TipsData.js";
 import { FaLongArrowAltRight } from "react-icons/fa";
 
 const savingsUrl =

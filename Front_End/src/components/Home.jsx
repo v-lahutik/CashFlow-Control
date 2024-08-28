@@ -1,8 +1,8 @@
 import React from 'react'
 import Budget from './BudgetDisplay.jsx'
-import ExpensesForm from '../components/ExpensesForm.jsx'
-import ExpensesList from '../components/ExpensesList.jsx'
-import SavingTips from '../components/SavingTips.jsx'
+import ExpensesForm from './ExpensesForm.jsx'
+import ExpensesList from './ExpensesList.jsx'
+import SavingTips from './SavingTips.jsx'
 import Charts from './Charts.jsx'
 
 

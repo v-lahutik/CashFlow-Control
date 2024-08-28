@@ -1,6 +1,6 @@
 import { Chart } from "primereact/chart";
 import { useContext, useState, useMemo } from "react";
-import { BudgetContext } from "../context/Context";
+import { BudgetContext } from "../context/Context.jsx";
 
 function Charts() {
   const { displayedTransaction } = useContext(BudgetContext);

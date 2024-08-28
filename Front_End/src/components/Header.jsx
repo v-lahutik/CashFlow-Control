@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { IoIosHome } from "react-icons/io";
-import logo from "../../assets/images/logo.png";
+import logo from "../images/logo.png";
 
 function Header() {
   const [isOpen, setIsOpen] = useState(false);

@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { BudgetContext } from "../context/Context";
+import { BudgetContext } from "../context/Context.jsx";
 import { v4 as uuidv4 } from "uuid";
 
 function ExpensesForm() {

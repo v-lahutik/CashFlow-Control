@@ -1,11 +1,11 @@
 import "./index.css";
-import { BudgetProvider } from "./assets/context/Context";
+import { BudgetProvider } from "./context/Context.jsx";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Register from "./assets/components/Register";
-import Layout from "./assets/components/Layout";
-import Login from "./assets/components/Login";
-import Header from "./assets/components/Header";
-import Home from "./assets/components/Home";
+import Register from "./components/Register.jsx";
+import Layout from "./components/Layout.jsx";
+import Login from "./components/Login.jsx";
+import Header from "./components/Header.jsx";
+import Home from "./components/Home.jsx";
 
 function App() {
   return (

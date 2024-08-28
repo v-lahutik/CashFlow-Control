@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { BudgetContext } from "../context/Context";
+import { BudgetContext } from "../context/Context.jsx";
 import { BsTrash, BsPencil  } from "react-icons/bs";
 import { PiChartLineUp, PiChartLineDown} from "react-icons/pi";
 

@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { BudgetContext } from "../context/Context";
+import { BudgetContext } from "../context/Context.jsx";
 import {
   GiMoneyStack,
   GiReceiveMoney,
