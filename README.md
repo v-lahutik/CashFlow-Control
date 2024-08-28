@@ -1,6 +1,6 @@
 # 💰 CashFlow Control
 
-CashFlow Control is a web application designed for personal budget planning. It allows users to track income, expenses, set budget goals, and receive random savings tips. **Please note that backend features, including user authentication and database storage, are still in progress.**
+CashFlow Control is a web application designed for personal budget planning and tracking. It allows users to track income, expenses, set budget goals, and receive random savings tips. **Please note that backend features, including user authentication and database storage, are still in progress.**
 
 ## 🌟 Features
 
