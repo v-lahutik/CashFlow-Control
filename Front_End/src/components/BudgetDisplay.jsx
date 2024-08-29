@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { BudgetContext } from "../context/Context.jsx";
 import {
   GiMoneyStack,
@@ -9,8 +9,10 @@ import {
 } from "react-icons/gi";
 import { BsPiggyBank } from "react-icons/bs";
 import { PiChartLineDown, PiChartLineUp } from "react-icons/pi";
+import ExpensesForm from "./ExpensesForm.jsx";
+import ExpensesList from "./ExpensesList.jsx";
 
-function Budget() {
+function Budget({ display, toggleView }) {
   const { state, dispatch } = useContext(BudgetContext);
 
   const incomeBudgetHandler = (e) => {
@@ -56,7 +58,16 @@ function Budget() {
   const difference = (totalAmount - savingGoal).toFixed(2);
   
   return (
+    <>
+   
+
     <div className="bg-gradient-to-r from-green-300 to-blue-300 rounded-lg border border-gray-100 p-4 ring ring-indigo-50 sm:p-6 lg:p-8 w-full max-w-screen-xl mx-auto">
+    <button onClick={toggleView}>
+          <strong className="rounded border border-green-300 bg-green-300 px-3 py-1.5 text-[12px] font-medium text-grey-500">
+            {display === "budget" ? "Table View" : "Overview"}
+          </strong>
+        </button>
+
     <p className="mt-1 text-sm text-gray-700 w-74 text-center p-3">
       Set your monthly income budget, expense budget, and savings goal to plan
       your finances.
@@ -215,6 +226,7 @@ function Budget() {
       </article>
     </div>
   </div>
+  </>
   );
 }
 

@@ -3,7 +3,7 @@ import { BudgetContext } from "../context/Context.jsx";
 import { BsTrash, BsPencil  } from "react-icons/bs";
 import { PiChartLineUp, PiChartLineDown} from "react-icons/pi";
 
-function ExpensesList() {
+function ExpensesList({ display, toggleView }) {
   const {
     state,
     dispatch,
@@ -42,6 +42,11 @@ function ExpensesList() {
   return (
     <>
       <div className="bg-white rounded-s p-4 ring ring-indigo-50 w-full max-w-screen-xl mx-auto">
+      <button onClick={toggleView}>
+          <strong className="rounded border border-green-300 bg-green-300 px-3 py-1.5 text-[12px] font-medium text-grey-500">
+            {display === "budget" ? "Table View" : "Overview"}
+          </strong>
+        </button>
       <div className="mx-auto max-w-lg text-center">
           <h2 className="text-2xl font-bold sm:text-3xl">
             Transaction List
