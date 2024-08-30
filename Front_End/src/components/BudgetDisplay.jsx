@@ -10,7 +10,7 @@ import {
 import { BsPiggyBank } from "react-icons/bs";
 import { PiChartLineDown, PiChartLineUp } from "react-icons/pi";
 import ExpensesForm from "./ExpensesForm.jsx";
-import ExpensesList from "./ExpensesList.jsx";
+
 
 function Budget({ display, toggleView }) {
   const { state, dispatch } = useContext(BudgetContext);

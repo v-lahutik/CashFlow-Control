@@ -1,8 +1,9 @@
 import React from 'react'
 import Budget from './BudgetDisplay.jsx'
 import ExpensesForm from './ExpensesForm.jsx'
-import ExpensesList from './ExpensesList.jsx'
 import { useState } from 'react'
+import Table from './Table.jsx'
+
 
 function Home() {
   const [display, setDisplay] = useState("budget");
@@ -18,9 +19,10 @@ function Home() {
         {display === "budget" ? (
           <Budget display={display} toggleView={toggleView} />
         ) : (
-          <ExpensesList display={display} toggleView={toggleView} />
+          <Table display={display} toggleView={toggleView} />
         )}
       </div>
+     
     </div>
   );
 }
