@@ -3,6 +3,7 @@ import Budget from './BudgetDisplay.jsx'
 import ExpensesForm from './ExpensesForm.jsx'
 import { useState } from 'react'
 import Table from './Table.jsx'
+// import CurrentMonth from './CurrentMonth.jsx'
 
 
 function Home() {
@@ -22,7 +23,7 @@ function Home() {
           <Table display={display} toggleView={toggleView} />
         )}
       </div>
-     
+     {/* <CurrentMonth /> */}
     </div>
   );
 }
