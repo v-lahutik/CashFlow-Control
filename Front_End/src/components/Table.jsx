@@ -42,7 +42,7 @@ function Table({ display, toggleView }) {
     // Apply type filter (all, income, expenses)
     if (filterOption !== "all") {
       filteredTransactions = filteredTransactions.filter(
-        (transaction) => transaction.transaction.type === filterOption
+        (transaction) => transaction.type === filterOption
       );
     }
 
@@ -50,15 +50,15 @@ function Table({ display, toggleView }) {
     if (monthFilter) {
       filteredTransactions = filteredTransactions.filter((transaction) => {
         const transactionMonth =
-          new Date(transaction.transaction.date).getMonth() + 1; // Months are 0-based in JavaScript
+          new Date(transaction.date).getMonth() + 1; // Months are 0-based in JavaScript
         return transactionMonth === parseInt(monthFilter);
       });
     }
 
     if (sortOrder) {
       filteredTransactions = [...filteredTransactions].sort((a, b) => {
-        const amountA = parseFloat(a.transaction.amount);
-        const amountB = parseFloat(b.transaction.amount);
+        const amountA = parseFloat(a.amount);
+        const amountB = parseFloat(b.amount);
         return sortOrder === "asc" ? amountA - amountB : amountB - amountA;
       });
     }
@@ -232,9 +232,10 @@ function Table({ display, toggleView }) {
                     ) : (
                       <>
                       {console.log("displayed transactions", displayedTransaction)}
-                        {/* <td className="px-4 py-2">
-                          {transaction.transaction.date}
-                        </td> */}
+                     
+                        <td className="px-4 py-2">
+                          {transaction.date}
+                        </td>
                         <td className="px-4 py-2 flex items-center">
                           {transaction.type === "income" && (
                             <PiChartLineUp className="ml-2 m-3 text-green-600" />
