@@ -1,8 +1,9 @@
-import React, { createContext, useReducer, useEffect } from "react";
+import React, { createContext, useReducer, useEffect, useState } from "react";
 
-
+// Create the Budget context
 const BudgetContext = createContext();
 
+// Initial state for the budget
 const initialState = JSON.parse(localStorage.getItem('budgetState')) || {
   budgetGoal: 12000, // Default yearly goal
   monthlyTracking: Array.from({ length: 12 }, (_, i) => ({
@@ -15,6 +16,7 @@ const initialState = JSON.parse(localStorage.getItem('budgetState')) || {
   transactions: [],
 };
 
+// Budget reducer to handle actions
 function budgetReducer(state, action) {
   switch (action.type) {
     case "SET_BUDGET_GOAL":
@@ -28,34 +30,51 @@ function budgetReducer(state, action) {
         })),
       };
 
-    case "ADD_TRANSACTION":
-      const updatedTracking = state.monthlyTracking.map((month) => {
-        if (month.month === action.payload.month) {
-          const newActualIncome =
-            action.payload.type === "income"
-              ? month.actualIncome + parseFloat(action.payload.amount)
-              : month.actualIncome;
-          const newActualExpenses =
-            action.payload.type === "expenses"
-              ? month.actualExpenses + parseFloat(action.payload.amount)
-              : month.actualExpenses;
+      case "ADD_TRANSACTION":
+        const updatedTracking = state.monthlyTracking.map((month) => {
+          if (month.month === action.payload.month) {
+            const newActualIncome =
+              action.payload.type === "income"
+                ? month.actualIncome + parseFloat(action.payload.amount)
+                : month.actualIncome;
+            const newActualExpenses =
+              action.payload.type === "expenses"
+                ? month.actualExpenses + Math.abs(parseFloat(action.payload.amount))
+                : month.actualExpenses; // Make sure expenses are added positively
+      
+            const goalMet = newActualIncome - newActualExpenses >= month.goal; // Adjust calculation
+      
+            return {
+              ...month,
+              actualIncome: newActualIncome,
+              actualExpenses: newActualExpenses,
+              goalMet,
+            };
+          }
+          return month;
+        });
+      
+        return {
+          ...state,
+          transactions: [...state.transactions, action.payload],
+          monthlyTracking: updatedTracking,
+        };
 
-          const goalMet = newActualIncome - newActualExpenses >= month.goal;
-
-          return {
-            ...month,
-            actualIncome: newActualIncome,
-            actualExpenses: newActualExpenses,
-            goalMet,
-          };
-        }
-        return month;
-      });
-
+    case "DELETE_TRANSACTION":
       return {
         ...state,
-        transactions: [...state.transactions, action.payload],
-        monthlyTracking: updatedTracking,
+        transactions: state.transactions.filter(transaction => transaction.id !== action.payload),
+      };
+
+    case "EDIT_TRANSACTION":
+      const updatedTransactions = state.transactions.map(transaction =>
+        transaction.id === action.payload.id
+          ? { ...transaction, transaction: action.payload.transaction }
+          : transaction
+      );
+      return {
+        ...state,
+        transactions: updatedTransactions,
       };
 
     default:
@@ -63,16 +82,33 @@ function budgetReducer(state, action) {
   }
 }
 
+// Budget Provider component
 const BudgetProvider = ({ children }) => {
   const [state, dispatch] = useReducer(budgetReducer, initialState);
+  const [displayedTransaction, setDisplayedTransaction] = useState(state.transactions);
 
   // Save state to local storage whenever it changes
   useEffect(() => {
     localStorage.setItem('budgetState', JSON.stringify(state));
-  }, [state]); // This effect runs every time `state` changes
+  }, [state]);
+
+  // Add a test transaction for debugging
+  // useEffect(() => {
+  //   const testTransaction = {
+  //     id: 1,
+  //     transaction: {
+  //       type: "income",
+  //       date: "2024-09-01",
+  //       category: "Salary",
+  //       amount: "5000",
+  //     },
+  //   };
+
+  //   dispatch({ type: "ADD_TRANSACTION", payload: testTransaction });
+  // }, []);
 
   return (
-    <BudgetContext.Provider value={{ state, dispatch }}>
+    <BudgetContext.Provider value={{ state, dispatch, displayedTransaction, setDisplayedTransaction }}>
       {children}
     </BudgetContext.Provider>
   );

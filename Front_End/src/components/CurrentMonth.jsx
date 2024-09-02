@@ -1,103 +1,41 @@
 import React, { useContext } from "react";
 import { BudgetContext } from "../context/Context.jsx";
-import { GiPayMoney, GiCash, GiMoneyStack } from "react-icons/gi";
 
 function CurrentMonth() {
   const { state } = useContext(BudgetContext);
 
-  // Get the current month and year
-  const currentDate = new Date();
-  const currentMonth = currentDate.getMonth();
-  const currentYear = currentDate.getFullYear();
+  // Get the current month name
+  const currentMonthName = new Date().toLocaleString("default", { month: "long" });
 
-  // Format the month for display
-  const options = { month: "long" };
-  const monthName = new Intl.DateTimeFormat("en-US", options).format(currentDate);
+  // Find the budget details for the current month
+  const currentMonth = state.monthlyTracking.find(month => month.month === currentMonthName);
 
-  // Filter transactions for the current month and year
-  const currentMonthTransactions = state.transactions.filter((trans) => {
-    const transDate = new Date(trans.transaction.date);
-    return (
-      transDate.getMonth() === currentMonth && transDate.getFullYear() === currentYear
-    );
-  });
+  // Calculate the balance for the current month
+  const currentMonthBalance = currentMonth.actualIncome - Math.abs(currentMonth.actualExpenses);
 
-  // Calculate totals for the current month
-  const totalIncome = currentMonthTransactions
-    .filter((trans) => trans.transaction.type === "income")
-    .reduce((acc, trans) => acc + parseFloat(trans.transaction.amount), 0)
-    .toFixed(2);
+  // Determine whether the balance is over or under the goal
+  const remainingOrExceededForMonth = currentMonthBalance - currentMonth.goal;
 
-  const totalExpenses = currentMonthTransactions
-    .filter((trans) => trans.transaction.type === "expenses")
-    .reduce((acc, trans) => acc + parseFloat(trans.transaction.amount), 0)
-    .toFixed(2);
-
-  const balance = (totalIncome - totalExpenses).toFixed(2);
+  const currentMonthGoalMessage =
+    remainingOrExceededForMonth >= 0
+      ? `You are €${remainingOrExceededForMonth.toFixed(2)} over your goal for ${currentMonthName}.`
+      : `You are €${Math.abs(remainingOrExceededForMonth).toFixed(2)} under your goal for ${currentMonthName}.`;
 
   return (
-    <div className="bg-gradient-to-r from-green-300 to-blue-300 rounded-lg border border-gray-100 p-4 ring ring-indigo-50 sm:p-6 lg:p-8 w-full max-w-screen-xl mx-auto">
-      <h2 className="text-xl font-bold mb-4">{`Current Month Overview for ${monthName} ${currentYear}`}</h2>
-
-      <div className="actual-container flex flex-wrap justify-center gap-4">
-        <article className="flex items-center justify-between rounded-lg border border-gray-100 bg-white p-4 sm:p-6 lg:p-8 w-full sm:w-80 max-w-xs lg:max-w-sm">
-          <div className="flex items-center gap-4">
-            <span className="hidden rounded-full bg-gray-100 p-3 text-gray-600 sm:block icon">
-              <GiMoneyStack />
-            </span>
-            <div>
-              <p className="text-sm text-gray-500">Saving Goal</p>
-              <p className="text-2xl font-medium text-gray-900">
-                €{(parseFloat(state.incomeBudget) + parseFloat(state.expensesBudget)).toFixed(2)}
-              </p>
-            </div>
-          </div>
-        </article>
-
-        <article className="flex items-center justify-between rounded-lg border border-gray-100 bg-white p-4 sm:p-6 lg:p-8 w-full sm:w-80 max-w-xs lg:max-w-sm">
-          <div className="flex items-center gap-4">
-            <span className="hidden rounded-full bg-gray-100 p-3 text-gray-600 sm:block icon">
-              <GiPayMoney />
-            </span>
-            <div>
-              <p className="text-sm text-gray-500">Total Expenses</p>
-              <p className="text-2xl font-medium text-gray-900">
-                €{totalExpenses}
-              </p>
-            </div>
-          </div>
-        </article>
-
-        <article className="flex items-center justify-between rounded-lg border border-gray-100 bg-white p-4 sm:p-6 lg:p-8 w-full sm:w-80 max-w-xs lg:max-w-sm">
-          <div className="flex items-center gap-4">
-            <span className="hidden rounded-full bg-gray-100 p-3 text-gray-600 sm:block icon">
-              <GiCash />
-            </span>
-            <div>
-              <p className="text-sm text-gray-500">Total Income</p>
-              <p className="text-2xl font-medium text-gray-900">
-                €{totalIncome}
-              </p>
-            </div>
-          </div>
-        </article>
-
-        <article className="flex items-center justify-between rounded-lg border border-gray-100 bg-white p-4 sm:p-6 lg:p-8 w-full sm:w-80 max-w-xs lg:max-w-sm">
-          <div className="flex items-center gap-4">
-            <span className="hidden rounded-full bg-gray-100 p-3 text-gray-600 sm:block icon">
-              <GiCash />
-            </span>
-            <div>
-              <p className="text-sm text-gray-500">Current Balance</p>
-              <p className="text-2xl font-medium text-gray-900">
-                €{balance}
-              </p>
-            </div>
-          </div>
-        </article>
+    <div className="bg-white p-4 rounded-lg ring ring-indigo-50 sm:p-6 lg:p-8 w-full max-w-screen-xl mx-auto mt-4">
+      <h2 className="text-center text-2xl font-bold mb-4">{currentMonthName} Budget Details</h2>
+      <div className="flex flex-col items-center">
+        <p className="text-xl font-semibold">Goal: €{currentMonth.goal.toFixed(2)}</p>
+        <p className="text-xl font-semibold">Actual Income: €{currentMonth.actualIncome.toFixed(2)}</p>
+        <p className="text-xl font-semibold">Actual Expenses: €{currentMonth.actualExpenses.toFixed(2)}</p>
+        <p className={`text-xl font-semibold ${currentMonthBalance >= 0 ? "text-green-600" : "text-red-600"}`}>
+          Balance: €{currentMonthBalance.toFixed(2)}
+        </p>
+        <p className="mt-2 text-lg font-semibold">{currentMonthGoalMessage}</p>
       </div>
     </div>
   );
 }
 
 export default CurrentMonth;
+

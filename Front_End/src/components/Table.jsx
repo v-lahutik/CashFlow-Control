@@ -3,7 +3,7 @@ import { BudgetContext } from "../context/Context.jsx";
 import { BsTrash, BsPencil } from "react-icons/bs";
 import { PiChartLineUp, PiChartLineDown } from "react-icons/pi";
 
-function ExpensesList({ display, toggleView }) {
+function Table({ display, toggleView }) {
   const { state, dispatch, displayedTransaction, setDisplayedTransaction } =
     useContext(BudgetContext);
 
@@ -50,7 +50,7 @@ function ExpensesList({ display, toggleView }) {
     if (monthFilter) {
       filteredTransactions = filteredTransactions.filter((transaction) => {
         const transactionMonth =
-          new Date(transaction.transaction.date).getMonth() + 1;
+          new Date(transaction.transaction.date).getMonth() + 1; // Months are 0-based in JavaScript
         return transactionMonth === parseInt(monthFilter);
       });
     }
@@ -67,176 +67,208 @@ function ExpensesList({ display, toggleView }) {
   }, [filterOption, monthFilter, sortOrder, state.transactions]);
 
   return (
-    <div className="bg-white rounded-s p-4 ring ring-indigo-50 w-full max-w-screen-xl mx-auto mt-6">
-      <div className="p-4 grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-7">
-        <div>
-          <select
-            className="w-full rounded-lg border-gray-300 p-2 text-gray-700"
-            value={filterOption}
-            onChange={(e) => setFilterOption(e.target.value)}
-          >
-            <option value="all">All</option>
-            <option value="income">Income</option>
-            <option value="expenses">Expenses</option>
-          </select>
-        </div>
-        <div>
-          <select
-            className="w-full rounded-lg border-gray-300 p-2 text-gray-700"
-            value={monthFilter}
-            onChange={(e) => setMonthFilter(e.target.value)}
-          >
-            <option value="">All Months</option>
-            <option value="1">January</option>
-            <option value="2">February</option>
-            <option value="3">March</option>
-            <option value="4">April</option>
-            <option value="5">May</option>
-            <option value="6">June</option>
-            <option value="7">July</option>
-            <option value="8">August</option>
-            <option value="9">September</option>
-            <option value="10">October</option>
-            <option value="11">November</option>
-            <option value="12">December</option>
-          </select>
-        </div>
-        <div>
-          <select
-            className="w-full rounded-lg border-gray-300 p-2 text-gray-700"
-            value={sortOrder}
-            onChange={(e) => setSortOrder(e.target.value)}
-          >
-            <option value="">Sort by</option>
-            <option value="asc">Amount (Low to High)</option>
-            <option value="desc">Amount (High to Low)</option>
-          </select>
-        </div>
-      </div>
-
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm text-left text-gray-500">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-200">
-            <tr>
-              <th scope="col" className="px-6 py-3">
-                Type
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Date
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Category
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Amount
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-  {displayedTransaction.map((item) => {
-    if (!item || !item.transaction) {
-      return null; // If item or transaction is undefined, skip rendering this row
-    }
+    <>
+      <div className="bg-white rounded-s p-4 ring ring-indigo-50 w-full max-w-screen-xl mx-auto">
+        {/* <button onClick={toggleView}>
+          <strong className="rounded border border-green-300 bg-green-300 px-3 py-1.5 text-[12px] font-medium text-grey-500">
+            {display === "budget" ? "Table View" : "Overview"}
+          </strong>
+        </button> */}
+        <div className="mx-auto max-w-lg text-center mt-4 m-10">
+          <h2 className="text-2xl font-bold sm:text-3xl">Transaction List</h2>
     
-    return (
-      <tr
-        key={item.id}
-        className={`bg-white border-b ${
-          item.transaction.type === "expenses"
-            ? "bg-red-100"
-            : "bg-green-100"
-        }`}
+        </div>
+
+        <form className="mb-4">
+  <div className="flex justify-between items-center gap-4">
+    {/* Transaction Type Filter */}
+    <label className="block w-full md:w-1/3">
+      <select
+        value={filterOption}
+        onChange={(e) => setFilterOption(e.target.value)}
+        className="block w-full mt-1 border rounded-lg p-2"
       >
-        <td className="px-6 py-4">
-          {item.transaction.type === "income" ? (
-            <PiChartLineUp className="text-green-500" />
+        <option value="all">All</option>
+        <option value="income">Income</option>
+        <option value="expenses">Expenses</option>
+      </select>
+    </label>
+
+    {/* Month Filter */}
+    <label className="block w-full md:w-1/3">
+      <select
+        value={monthFilter}
+        onChange={(e) => setMonthFilter(e.target.value)}
+        className="block w-full mt-1 border rounded-lg p-2"
+      >
+        <option value="" disabled hidden>
+          Select Month
+        </option>
+        <option value="">All</option>
+        <option value="1">January</option>
+        <option value="2">February</option>
+        <option value="3">March</option>
+        <option value="4">April</option>
+        <option value="5">May</option>
+        <option value="6">June</option>
+        <option value="7">July</option>
+        <option value="8">August</option>
+        <option value="9">September</option>
+        <option value="10">October</option>
+        <option value="11">November</option>
+        <option value="12">December</option>
+      </select>
+    </label>
+
+    {/* Amount Sorting */}
+    <label className="block w-full md:w-1/3">
+      <select
+        value={sortOrder}
+        onChange={(e) => setSortOrder(e.target.value)}
+        className="block w-full mt-1 border rounded-lg p-2"
+      >
+        <option value="" disabled hidden>
+          Sort by Amount
+        </option>
+        <option value="asc">Ascending</option>
+        <option value="desc">Descending</option>
+      </select>
+    </label>
+  </div>
+</form>
+
+        <div className="overflow-x-auto">
+          {displayedTransaction.length === 0 ? (
+            <div className="text-center p-4 text-gray-500">
+              <p>No transactions available.</p>
+              <p>Add a new transaction to get started.</p>
+            </div>
           ) : (
-            <PiChartLineDown className="text-red-500" />
+            <table className="min-w-full bg-white border border-gray-200">
+              <thead className="bg-gradient-to-r from-green-300 to-blue-300">
+                <tr>
+                  <th className="text-left px-4 py-2 border-b">Date</th>
+                  <th className="text-left px-4 py-2 border-b">Type</th>
+                  <th className="text-left px-4 py-2 border-b">Category</th>
+                  <th className="text-left px-4 py-2 border-b">Amount</th>
+                  <th className="text-left px-4 py-2 border-b">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {displayedTransaction.map((transaction) => (
+                  <tr key={transaction.id} className="border-b">
+                    {editMode === transaction.id ? (
+                      // edit mode
+                      <>
+                        <td className="px-4 py-2">
+                          <input
+                            type="date"
+                            value={editFormData.date}
+                            onChange={(e) =>
+                              setEditFormData({
+                                ...editFormData,
+                                date: e.target.value,
+                              })
+                            }
+                            className="border rounded px-2 py-1"
+                          />
+                        </td>
+                        <td className="px-4 py-2">
+                          <select
+                            value={editFormData.type}
+                            onChange={(e) =>
+                              setEditFormData({
+                                ...editFormData,
+                                type: e.target.value,
+                              })
+                            }
+                            className="border rounded px-2 py-1"
+                          >
+                            <option value="income">Income</option>
+                            <option value="expenses">Expenses</option>
+                          </select>
+                        </td>
+                        <td className="px-4 py-2">
+                          <input
+                            type="text"
+                            value={editFormData.category}
+                            onChange={(e) =>
+                              setEditFormData({
+                                ...editFormData,
+                                category: e.target.value,
+                              })
+                            }
+                            className="border rounded px-2 py-1"
+                          />
+                        </td>
+                        <td className="px-4 py-2">
+                          <input
+                            type="number"
+                            value={editFormData.amount}
+                            onChange={(e) =>
+                              setEditFormData({
+                                ...editFormData,
+                                amount: e.target.value,
+                              })
+                            }
+                            className="border rounded px-2 py-1"
+                          />
+                        </td>
+                        <td className="px-4 py-2 flex gap-2">
+                          <button
+                            onClick={() => saveEditHandler(transaction.id)}
+                            className="text-green-600 hover:underline"
+                          >
+                            Save
+                          </button>
+                          <button
+                            onClick={() => setEditMode(null)}
+                            className="text-red-600 hover:underline"
+                          >
+                            Cancel
+                          </button>
+                        </td>
+                      </>
+                    ) : (
+                      <>
+                      {console.log("displayed transactions", displayedTransaction)}
+                        {/* <td className="px-4 py-2">
+                          {transaction.transaction.date}
+                        </td> */}
+                        <td className="px-4 py-2 flex items-center">
+                          {transaction.type === "income" && (
+                            <PiChartLineUp className="ml-2 m-3 text-green-600" />
+                          )}
+                          {transaction.type === "expenses" && (
+                            <PiChartLineDown className="ml-2 m-3 text-red-600" />
+                          )}
+                          {transaction.type}
+                        </td>
+                        <td className="px-4 py-2">
+                          {transaction.category}
+                        </td>
+                        <td className="px-4 py-2">
+                          {transaction.amount}
+                        </td>
+                        <td className="px-4 py-2 flex gap-2">
+                          <button onClick={() => editHandler(transaction)}>
+                            <BsPencil />
+                          </button>
+                          <button onClick={() => deleteHandler(transaction.id)}>
+                            <BsTrash />
+                          </button>
+                        </td>
+                      </>
+                    )}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           )}
-        </td>
-        <td className="px-6 py-4">
-          {editMode === item.id ? (
-            <input
-              type="date"
-              className="w-full rounded-lg border-gray-200 p-1 text-sm shadow-sm"
-              value={editFormData.date}
-              onChange={(e) =>
-                setEditFormData({
-                  ...editFormData,
-                  date: e.target.value,
-                })
-              }
-            />
-          ) : (
-            item.transaction.date
-          )}
-        </td>
-        <td className="px-6 py-4">
-          {editMode === item.id ? (
-            <input
-              type="text"
-              className="w-full rounded-lg border-gray-200 p-1 text-sm shadow-sm"
-              value={editFormData.category}
-              onChange={(e) =>
-                setEditFormData({
-                  ...editFormData,
-                  category: e.target.value,
-                })
-              }
-            />
-          ) : (
-            item.transaction.category
-          )}
-        </td>
-        <td className="px-6 py-4">
-          {editMode === item.id ? (
-            <input
-              type="number"
-              className="w-full rounded-lg border-gray-200 p-1 text-sm shadow-sm"
-              value={editFormData.amount}
-              onChange={(e) =>
-                setEditFormData({
-                  ...editFormData,
-                  amount: e.target.value,
-                })
-              }
-            />
-          ) : (
-            item.transaction.amount
-          )}
-        </td>
-        <td className="px-6 py-4">
-          {editMode === item.id ? (
-            <button
-              onClick={() => saveEditHandler(item.id)}
-              className="text-blue-600"
-            >
-              Save
-            </button>
-          ) : (
-            <>
-              <BsPencil
-                onClick={() => editHandler(item)}
-                className="inline-block mr-2 cursor-pointer text-blue-600"
-              />
-              <BsTrash
-                onClick={() => deleteHandler(item.id)}
-                className="inline-block cursor-pointer text-red-600"
-              />
-            </>
-          )}
-        </td>
-      </tr>
-    );
-  })}
-</tbody>
-        </table>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 
-export default ExpensesList;
+export default Table;

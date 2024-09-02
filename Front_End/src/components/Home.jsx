@@ -2,8 +2,9 @@ import React from 'react'
 import Budget from './BudgetDisplay.jsx'
 import ExpensesForm from './ExpensesForm.jsx'
 import { useState } from 'react'
+
 import Table from './Table.jsx'
-// import CurrentMonth from './CurrentMonth.jsx'
+
 
 
 function Home() {
@@ -17,13 +18,9 @@ function Home() {
     <div className="main-container bg-gray-100 p-2 sm:p-4 lg:p-6">
       <div className="top-container flex flex-col sm:flex-row gap-4">
         <ExpensesForm />
-        {display === "budget" ? (
-          <Budget display={display} toggleView={toggleView} />
-        ) : (
-          <Table display={display} toggleView={toggleView} />
-        )}
+        <Budget />
       </div>
-     {/* <CurrentMonth /> */}
+     <Table/>
     </div>
   );
 }
