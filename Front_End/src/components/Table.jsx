@@ -10,6 +10,9 @@ function Table({ display, toggleView }) {
   const [filterOption, setFilterOption] = useState("all");
   const [monthFilter, setMonthFilter] = useState("");
   const [sortOrder, setSortOrder] = useState("");
+  
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 20;
 
   const [editMode, setEditMode] = useState(null);
   const [editFormData, setEditFormData] = useState({
@@ -64,81 +67,93 @@ function Table({ display, toggleView }) {
     }
 
     setDisplayedTransaction(filteredTransactions);
+    setCurrentPage(1); // Reset to first page on filter/sort change
   }, [filterOption, monthFilter, sortOrder, state.transactions]);
+
+  // Pagination calculations
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentTransactions = displayedTransaction.slice(indexOfFirstItem, indexOfLastItem);
+  console.log("displayed trans",displayedTransaction)
+  console.log("displayed trans map",displayedTransaction.map(transaction => transaction))
+  console.log("sate", state.transactions)
+  const totalPages = Math.ceil(displayedTransaction.length / itemsPerPage);
+
+  const nextPage = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
+
+  const prevPage = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
 
   return (
     <>
       <div className="bg-white rounded-s p-4 ring ring-indigo-50 w-full max-w-screen-xl mx-auto">
-        {/* <button onClick={toggleView}>
-          <strong className="rounded border border-green-300 bg-green-300 px-3 py-1.5 text-[12px] font-medium text-grey-500">
-            {display === "budget" ? "Table View" : "Overview"}
-          </strong>
-        </button> */}
         <div className="mx-auto max-w-lg text-center mt-4 m-10">
           <h2 className="text-2xl font-bold sm:text-3xl">Transaction List</h2>
-    
         </div>
 
         <form className="mb-4">
-  <div className="flex justify-between items-center gap-4">
-    {/* Transaction Type Filter */}
-    <label className="block w-full md:w-1/3">
-      <select
-        value={filterOption}
-        onChange={(e) => setFilterOption(e.target.value)}
-        className="block w-full mt-1 border rounded-lg p-2"
-      >
-        <option value="all">All</option>
-        <option value="income">Income</option>
-        <option value="expenses">Expenses</option>
-      </select>
-    </label>
+          <div className="flex justify-between items-center gap-4">
+            {/* Transaction Type Filter */}
+            <label className="block w-full md:w-1/3">
+              <select
+                value={filterOption}
+                onChange={(e) => setFilterOption(e.target.value)}
+                className="block w-full mt-1 border rounded-lg p-2"
+              >
+                <option value="all">All</option>
+                <option value="income">Income</option>
+                <option value="expenses">Expenses</option>
+              </select>
+            </label>
 
-    {/* Month Filter */}
-    <label className="block w-full md:w-1/3">
-      <select
-        value={monthFilter}
-        onChange={(e) => setMonthFilter(e.target.value)}
-        className="block w-full mt-1 border rounded-lg p-2"
-      >
-        <option value="" disabled hidden>
-          Select Month
-        </option>
-        <option value="">All</option>
-        <option value="1">January</option>
-        <option value="2">February</option>
-        <option value="3">March</option>
-        <option value="4">April</option>
-        <option value="5">May</option>
-        <option value="6">June</option>
-        <option value="7">July</option>
-        <option value="8">August</option>
-        <option value="9">September</option>
-        <option value="10">October</option>
-        <option value="11">November</option>
-        <option value="12">December</option>
-      </select>
-    </label>
+            {/* Month Filter */}
+            <label className="block w-full md:w-1/3">
+              <select
+                value={monthFilter}
+                onChange={(e) => setMonthFilter(e.target.value)}
+                className="block w-full mt-1 border rounded-lg p-2"
+              >
+                <option value="" disabled hidden>
+                  Sort by Month
+                </option>
+                <option value="">All</option>
+                <option value="1">January</option>
+                <option value="2">February</option>
+                <option value="3">March</option>
+                <option value="4">April</option>
+                <option value="5">May</option>
+                <option value="6">June</option>
+                <option value="7">July</option>
+                <option value="8">August</option>
+                <option value="9">September</option>
+                <option value="10">October</option>
+                <option value="11">November</option>
+                <option value="12">December</option>
+              </select>
+            </label>
 
-    {/* Amount Sorting */}
-    <label className="block w-full md:w-1/3">
-      <select
-        value={sortOrder}
-        onChange={(e) => setSortOrder(e.target.value)}
-        className="block w-full mt-1 border rounded-lg p-2"
-      >
-        <option value="" disabled hidden>
-          Sort by Amount
-        </option>
-        <option value="asc">Ascending</option>
-        <option value="desc">Descending</option>
-      </select>
-    </label>
-  </div>
-</form>
+            {/* Amount Sorting */}
+            <label className="block w-full md:w-1/3">
+              <select
+                value={sortOrder}
+                onChange={(e) => setSortOrder(e.target.value)}
+                className="block w-full mt-1 border rounded-lg p-2"
+              >
+                <option value="" disabled hidden>
+                  Sort by Amount
+                </option>
+                <option value="asc">Ascending</option>
+                <option value="desc">Descending</option>
+              </select>
+            </label>
+          </div>
+        </form>
 
         <div className="overflow-x-auto">
-          {displayedTransaction.length === 0 ? (
+          {currentTransactions.length === 0 ? (
             <div className="text-center p-4 text-gray-500">
               <p>No transactions available.</p>
               <p>Add a new transaction to get started.</p>
@@ -155,10 +170,11 @@ function Table({ display, toggleView }) {
                 </tr>
               </thead>
               <tbody>
-                {displayedTransaction.map((transaction) => (
-                  <tr key={transaction.id} className="border-b">
+              
+                {currentTransactions.map((transaction) => (
+                   <tr key={transaction.id } className="border-b">
+                  
                     {editMode === transaction.id ? (
-                      // edit mode
                       <>
                         <td className="px-4 py-2">
                           <input
@@ -231,11 +247,7 @@ function Table({ display, toggleView }) {
                       </>
                     ) : (
                       <>
-                      {console.log("displayed transactions", displayedTransaction)}
-                     
-                        <td className="px-4 py-2">
-                          {transaction.date}
-                        </td>
+                        <td className="px-4 py-2">{transaction.date}</td>
                         <td className="px-4 py-2 flex items-center">
                           {transaction.type === "income" && (
                             <PiChartLineUp className="ml-2 m-3 text-green-600" />
@@ -245,12 +257,8 @@ function Table({ display, toggleView }) {
                           )}
                           {transaction.type}
                         </td>
-                        <td className="px-4 py-2">
-                          {transaction.category}
-                        </td>
-                        <td className="px-4 py-2">
-                          {transaction.amount}
-                        </td>
+                        <td className="px-4 py-2">{transaction.category}</td>
+                        <td className="px-4 py-2">{transaction.amount}</td>
                         <td className="px-4 py-2 flex gap-2">
                           <button onClick={() => editHandler(transaction)}>
                             <BsPencil />
@@ -266,6 +274,27 @@ function Table({ display, toggleView }) {
               </tbody>
             </table>
           )}
+        </div>
+
+        {/* Pagination Controls */}
+        <div className="flex justify-between items-center mt-4">
+          <button
+            onClick={prevPage}
+            disabled={currentPage === 1}
+            className="px-4 py-2 bg-gray-200 rounded-md"
+          >
+            Previous
+          </button>
+          <span className="text-gray-700">
+            Page {currentPage} of {totalPages}
+          </span>
+          <button
+            onClick={nextPage}
+            disabled={currentPage === totalPages}
+            className="px-4 py-2 bg-gray-200 rounded-md"
+          >
+            Next
+          </button>
         </div>
       </div>
     </>
