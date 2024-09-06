@@ -61,7 +61,7 @@ const BudgetChart = () => {
         scales: {
           x: {
             title: {
-              display: true,
+              display: false,
               text: 'Month',
             },
           },

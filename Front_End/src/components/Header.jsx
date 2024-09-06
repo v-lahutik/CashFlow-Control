@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { IoIosHome } from "react-icons/io";
+import { IoIosHome, IoMdLogIn } from "react-icons/io";
 import { IoBarChart } from "react-icons/io5";
 import { HiOutlineTableCells } from "react-icons/hi2";
 
@@ -81,7 +81,7 @@ function Header() {
                 flex items-center`
                 }
               >
-                <IoIosHome className="w-5 h-5 mr-2 hidden md:inline" />
+                <IoIosHome className="w-5 h-5 mr-2" />
                 {/* Icon visible on medium screens and up */}
                 Home
               </NavLink>
@@ -101,7 +101,7 @@ function Header() {
                 flex items-center`
                 }
               >
-                <HiOutlineTableCells className="w-5 h-5 mr-2 hidden md:inline" />
+                <HiOutlineTableCells className="w-5 h-5 mr-2 " />
                 {/* Icon visible on medium screens and up */}
                 Table
               </NavLink>
@@ -120,7 +120,7 @@ function Header() {
                 flex items-center`
                 }
               >
-                <IoBarChart className="w-5 h-5 mr-2 hidden md:inline" />
+                <IoBarChart className="w-5 h-5 mr-2" />
                 {/* Icon visible on medium screens and up */}
                 Charts
               </NavLink>
@@ -141,27 +141,11 @@ function Header() {
                 flex items-center`
                 }
               >
+                <IoMdLogIn className="w-5 h-5 mr-2" />
                 Login
               </NavLink>
             </li>
-            <li>
-              <NavLink
-                to="/register"
-                className={({ isActive }) =>
-                  `block py-2 px-3 rounded text-gray-900 
-                ${isActive ? "text-blue-500" : "dark:text-white"} 
-                hover:bg-gray-100 
-                md:hover:bg-transparent 
-                md:border-0 
-                md:hover:text-blue-500 
-                dark:hover:bg-gray-700 
-                dark:hover:text-white 
-                flex items-center`
-                }
-              >
-                Register
-              </NavLink>
-            </li>
+           
           </ul>
         </div>
       </div>

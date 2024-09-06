@@ -6,6 +6,7 @@ import {
   GiPayMoney,
   GiCash,
 } from "react-icons/gi";
+import { BsPiggyBank } from "react-icons/bs";
 
 function CurrentMonth() {
   const { state } = useContext(BudgetContext);
@@ -46,8 +47,57 @@ function CurrentMonth() {
       <h2 className="text-center text-2xl font-bold mb-4">
         {currentMonthName} Budget Details
       </h2>
-      <div className="flex flex-col items-center">
-        <div className="flex flex-col md:flex-row justify-around w-full">
+      <div className="flex flex-col md:flex-row justify-between items-start">
+        {/* Combined Balance and Monthly Goal Card */}
+        <article className="flex flex-col rounded-lg text-center border border-gray-200 bg-gradient-to-br from-white to-gray-100 p-6 sm:p-8 shadow-lg transition-transform transform hover:scale-105 w-full md:w-80 mb-4 md:mb-0">
+          <div className="flex items-center  gap-4">
+          <span className="hidden rounded-full bg-green-100 p-4 text-green-600 sm:block icon ">
+              <BsPiggyBank size={30} />
+            </span>
+            <div>
+              <p className="text-sm text-gray-500 ">Monthly Goal</p>
+              <p className="text-xl font-medium text-gray-900">
+                €{currentMonth.goal.toFixed(2)}
+              </p>
+            </div>
+          </div>
+
+          {/* Progress Bar */}
+          <div className="relative mt-2 w-full bg-gray-200 rounded-full h-3">
+            <div
+              className="absolute top-0 left-0 h-full bg-green-600 rounded-full"
+              style={{ width: `${progressPercentage}%` }}
+            />
+          </div>
+
+          <p className="text-sm text-gray-600 mt-1 text-center">
+            {currentMonth.actualIncome >= currentMonth.goal
+              ? `€${(currentMonth.actualIncome - currentMonth.goal).toFixed(
+                  2
+                )} over your goal`
+              : `€${(currentMonth.goal - currentMonth.actualIncome).toFixed(
+                  2
+                )} left until your goal`}
+          </p>
+
+          {/* Balance Display */}
+          <div className="flex items-center gap-4 mt-4 ">
+            <div >
+            <p className="text-sm text-gray-500 mt-4">Balance: <span
+                className={`font-medium ${
+                  currentMonthBalance >= 0 ? "text-green-600" : "text-red-600"
+                }`}
+              >
+                €{currentMonthBalance.toFixed(2)}
+              </span></p>
+            
+              
+            </div>
+          </div>
+        </article>
+
+        {/* Income and Expenses Cards */}
+        <div className="flex flex-col md:flex-row md:ml-4 w-full justify-around">
           {/* Income Card */}
           <article className="flex items-center justify-between rounded-lg border border-gray-100 bg-gradient-to-br from-white to-gray-100 p-4 sm:p-6 lg:p-8 w-full sm:w-80 max-w-xs lg:max-w-sm mb-4 md:mb-0">
             <div className="flex items-center gap-4">
@@ -77,58 +127,7 @@ function CurrentMonth() {
               </div>
             </div>
           </article>
-
-          {/* Balance Card */}
-          <article className="flex items-center justify-between rounded-lg border border-gray-100 bg-gradient-to-br from-white to-gray-100 p-4 sm:p-6 lg:p-8 w-full sm:w-80 max-w-xs lg:max-w-sm">
-            <div className="flex items-center gap-4">
-              <span className="rounded-full bg-blue-100 p-4 text-blue-600">
-                <GiCash size={30} />
-              </span>
-              <div>
-                <p className="text-sm text-gray-500">Balance</p>
-                <p
-                  className={`text-2xl font-medium ${
-                    currentMonthBalance >= 0 ? "text-green-600" : "text-red-600"
-                  }`}
-                >
-                  €{currentMonthBalance.toFixed(2)}
-                </p>
-              </div>
-            </div>
-          </article>
         </div>
-
-        <article className="flex flex-col rounded-lg border border-gray-200 bg-gradient-to-br from-white to-gray-100 p-6 sm:p-8 shadow-lg transition-transform transform hover:scale-105 w-full sm:w-80 max-w-xs lg:max-w-sm mb-4 md:mb-0">
-          <div className="flex items-center gap-4">
-            <span className="rounded-full bg-gray-100 p-4 text-green-600">
-              <GiMoneyStack size={30} />
-            </span>
-            <div>
-              <p className="text-sm text-gray-500">Monthly Goal</p>
-              <p className="text-2xl font-medium text-gray-900">
-                €{currentMonth.goal.toFixed(2)}
-              </p>
-            </div>
-          </div>
-
-          {/* Progress Bar */}
-          <div className="relative mt-2 w-full bg-gray-200 rounded-full h-3">
-            <div
-              className="absolute top-0 left-0 h-full bg-green-600 rounded-full"
-              style={{ width: `${progressPercentage}%` }}
-            />
-          </div>
-
-          <p className="text-sm text-gray-600 mt-1 text-center">
-            {currentMonth.actualIncome >= currentMonth.goal
-              ? `€${(currentMonth.actualIncome - currentMonth.goal).toFixed(
-                  2
-                )} over`
-              : `€${(currentMonth.goal - currentMonth.actualIncome).toFixed(
-                  2
-                )} left`}
-          </p>
-        </article>
       </div>
     </div>
   );

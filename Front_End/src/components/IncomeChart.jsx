@@ -76,7 +76,7 @@ const IncomeChart = () => {
           x: {
             stacked: false, // Stack false to display grouped bars
             title: {
-              display: true,
+              display: false,
               text: 'Month',
             },
             ticks: {

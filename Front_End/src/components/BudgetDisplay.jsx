@@ -23,12 +23,10 @@ function BudgetDisplay() {
 
   const totalExpense = state.transactions
     .filter((transaction) => transaction.type === "expenses")
-    .reduce((acc, curr) => acc + parseFloat(curr.amount), 0); // Keep as negative
+    .reduce((acc, curr) => acc + parseFloat(curr.amount), 0);
 
-  const difference = totalIncome + totalExpense; // Update difference calculation
+  const difference = totalIncome + totalExpense;
   const monthlyGoal = (state.budgetGoal / 12).toFixed(2);
-
-  // Calculate how much is left or exceeded
   const remainingOrExceeded = state.budgetGoal - difference;
 
   return (
@@ -37,14 +35,15 @@ function BudgetDisplay() {
         Yearly Budget Overview
       </h1>
 
-      <div className="flex flex-col md:flex-row justify-around">
-        <article className="flex flex-col rounded-lg border border-gray-200 bg-gradient-to-br from-white to-gray-100 p-6 sm:p-8 shadow-lg transition-transform transform hover:scale-105 w-full md:w-64">
+      <div className="flex flex-col md:flex-row justify-between items-start">
+        {/* Set Your Yearly Income */}
+        <article className="flex flex-col rounded-lg border border-gray-200 bg-gradient-to-br from-white to-gray-100 p-6 sm:p-8 shadow-lg transition-transform transform hover:scale-105 w-full md:w-64 mb-4 md:mb-0">
           <label
             htmlFor="budgetGoal"
-            className="block text-sm font-medium text-gray-900 mb-2 text-center" // Added text-center class
+            className="block text-sm font-medium text-gray-900 mb-2 text-center"
           >
             Set your <span className="font-bold text-green-600 ">YEARLY </span>
-            budget goal
+            income
           </label>
           <input
             value={state.budgetGoal}
@@ -52,16 +51,16 @@ function BudgetDisplay() {
             type="number"
             id="budgetGoal"
             className="mt-1 p-3 rounded-lg border border-gray-300 text-gray-700 text-center sm:text-sm w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            placeholder="Set yearly budget goal"
+            placeholder="Set yearly income goal"
           />
           <p className="mt-2 text-gray-600 text-center font-semibold">
-            Monthly Budget Goal:
+            Monthly Income Goal:
             <span className="text-green-600">€{monthlyGoal}</span>
           </p>
         </article>
 
-        {/* Progress bar component */}
-        <article className="flex flex-col rounded-lg border border-gray-200 bg-gradient-to-br from-white to-gray-100 p-6 sm:p-8 shadow-lg transition-transform transform hover:scale-105 w-full md:w-80">
+        {/* Combined Progress Bar and Balance */}
+        <article className="flex flex-col rounded-lg border border-gray-200 bg-gradient-to-br from-white to-gray-100 p-6 sm:p-8 shadow-lg transition-transform transform hover:scale-105 w-full md:w-80 mb-4 md:mb-0">
           <div className="flex items-center gap-4">
             <span className="hidden rounded-full bg-green-100 p-4 text-green-600 sm:block icon">
               <BsPiggyBank size={30} />
@@ -91,59 +90,51 @@ function BudgetDisplay() {
                     remainingOrExceeded
                   ).toFixed(2)}.`}
             </p>
+
+            <p className="text-sm text-gray-500 mt-4">
+              Balance:
+              <span
+                className={`font-medium ${
+                  difference >= 0 ? "text-green-600" : "text-red-600"
+                }`}
+              >
+                €{difference.toFixed(2)}
+              </span>
+            </p>
           </div>
         </article>
-      </div>
 
-      <div className="flex flex-col md:flex-row justify-around mt-6">
-        <div className="text-center">
-          <div className="flex flex-col md:flex-row justify-around">
-            <article className="flex items-center justify-between rounded-lg border border-gray-100 bg-white p-4 sm:p-6 lg:p-8 w-full sm:w-80 max-w-xs lg:max-w-sm">
-              <div className="flex items-center gap-4">
-                <span className="hidden rounded-full bg-green-100 p-4 text-green-600 sm:block icon">
-                  <GiReceiveMoney size={30} />
-                </span>
-                <div>
-                  <p className="text-sm text-gray-500">Total Income</p>
-                  <p className="text-2xl font-medium text-gray-900">
-                    €{totalIncome.toFixed(2)}
-                  </p>
-                </div>
+        {/* Total Income and Total Expenses */}
+        <div className="flex flex-col items-center md:items-start">
+          {/* Total Income */}
+          <article className="flex items-center justify-between rounded-lg border border-gray-100 bg-white p-4 sm:p-6 lg:p-8 w-full sm:w-80 max-w-xs lg:max-w-sm mb-4">
+            <div className="flex items-center gap-4">
+              <span className="hidden rounded-full bg-green-100 p-4 text-green-600 sm:block icon">
+                <GiReceiveMoney size={30} />
+              </span>
+              <div>
+                <p className="text-sm text-gray-500">Total Income</p>
+                <p className="text-2xl font-medium text-gray-900">
+                  €{totalIncome.toFixed(2)}
+                </p>
               </div>
-            </article>
+            </div>
+          </article>
 
-            <article className="flex items-center justify-between rounded-lg border border-gray-100 bg-white p-4 sm:p-6 lg:p-8 w-full sm:w-80 max-w-xs lg:max-w-sm">
-              <div className="flex items-center gap-4">
-                <span className="hidden rounded-full bg-red-100 p-4 text-red-600 sm:block icon">
-                  <GiPayMoney size={30} />
-                </span>
-                <div>
-                  <p className="text-sm text-gray-500">Total Expenses</p>
-                  <p className="text-2xl font-medium text-gray-900">
-                    €{totalExpense.toFixed(2)}
-                  </p>{" "}
-                </div>
+          {/* Total Expenses */}
+          <article className="flex items-center justify-between rounded-lg border border-gray-100 bg-white p-4 sm:p-6 lg:p-8 w-full sm:w-80 max-w-xs lg:max-w-sm">
+            <div className="flex items-center gap-4">
+              <span className="hidden rounded-full bg-red-100 p-4 text-red-600 sm:block icon">
+                <GiPayMoney size={30} />
+              </span>
+              <div>
+                <p className="text-sm text-gray-500">Total Expenses</p>
+                <p className="text-2xl font-medium text-gray-900">
+                  €{totalExpense.toFixed(2)}
+                </p>
               </div>
-            </article>
-
-            <article className="flex items-center justify-between rounded-lg border border-gray-100 bg-white p-4 sm:p-6 lg:p-8 w-full sm:w-80 max-w-xs lg:max-w-sm">
-              <div className="flex items-center gap-4">
-                <span className="hidden rounded-full bg-blue-100 p-4 text-blue-600 sm:block icon">
-                  <GiCash size={30} />
-                </span>
-                <div>
-                  <p className="text-sm text-gray-500">Balance</p>
-                  <p
-                    className={`text-2xl font-medium ${
-                      difference >= 0 ? "text-green-600" : "text-red-600"
-                    }`}
-                  >
-                    €{difference.toFixed(2)}
-                  </p>
-                </div>
-              </div>
-            </article>
-          </div>
+            </div>
+          </article>
         </div>
       </div>
 
