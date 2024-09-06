@@ -74,9 +74,6 @@ function Table({ display, toggleView }) {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentTransactions = displayedTransaction.slice(indexOfFirstItem, indexOfLastItem);
-  console.log("displayed trans",displayedTransaction)
-  console.log("displayed trans map",displayedTransaction.map(transaction => transaction))
-  console.log("sate", state.transactions)
   const totalPages = Math.ceil(displayedTransaction.length / itemsPerPage);
 
   const nextPage = () => {
@@ -89,6 +86,7 @@ function Table({ display, toggleView }) {
 
   return (
     <>
+    
       <div className="bg-white rounded-s p-4 ring ring-indigo-50 w-full max-w-screen-xl mx-auto">
         <div className="mx-auto max-w-lg text-center mt-4 m-10">
           <h2 className="text-2xl font-bold sm:text-3xl">Transaction List</h2>
