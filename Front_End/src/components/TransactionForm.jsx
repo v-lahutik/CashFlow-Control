@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { BudgetContext } from "../context/Context.jsx";
 
-function ExpensesForm() {
+function TransactionForm() {
   const { dispatch } = useContext(BudgetContext);
   const [transactionType, setTransactionType] = useState("");
   const [category, setCategory] = useState("");
@@ -223,4 +223,4 @@ function ExpensesForm() {
   );
 }
 
-export default ExpensesForm;
+export default TransactionForm;

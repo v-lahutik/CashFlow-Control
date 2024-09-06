@@ -1,9 +1,8 @@
 import React from 'react'
-import Budget from './BudgetDisplay.jsx'
-import ExpensesForm from './ExpensesForm.jsx'
 import { useState } from 'react'
-
+import TransactionForm from './TransactionForm.jsx'
 import Table from './Table.jsx'
+import BudgetDisplay from './BudgetDisplay.jsx'
 
 
 
@@ -17,10 +16,10 @@ function Home() {
   return (
     <div className="main-container bg-gray-100 p-2 sm:p-4 lg:p-6">
       <div className="top-container flex flex-col sm:flex-row gap-4">
-        <ExpensesForm />
-        <Budget />
+        <TransactionForm />
+        <BudgetDisplay />
       </div>
-     <Table/>
+     
     </div>
   );
 }
