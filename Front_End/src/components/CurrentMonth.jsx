@@ -26,7 +26,7 @@ function CurrentMonth() {
     100
   );
   return (
-    <div className="bg-white p-4 rounded-lg ring ring-indigo-50 sm:p-6 lg:p-8 w-full max-w-screen-xl mx-auto mt-4">
+    <div className=" p-4 rounded-lg sm:p-6 lg:p-8 w-full max-w-screen-xl mx-auto mt-4">
       <h2 className="text-center text-2xl font-bold mb-4 py-4">
         {currentMonthName} Budget Details
       </h2>
@@ -97,7 +97,7 @@ function CurrentMonth() {
                 <GiReceiveMoney size={24} /> 
               </span>
               <div>
-                <p className="text-xs text-gray-500">This month’s income</p>
+              <p className="text-sm text-gray-500">Total Income</p>
           
                 <p className="text-xl text-center font-medium text-gray-900">
                   €{currentMonth.actualIncome.toFixed(2)}
@@ -112,7 +112,7 @@ function CurrentMonth() {
                 <GiPayMoney size={24} />
               </span>
               <div>
-                <p className="text-xs text-gray-500">This month’s expenses</p>
+              <p className="text-sm text-gray-500">Total Expenses</p>
                 <p className="text-xl text-center font-medium text-gray-900">
                   €{currentMonth.actualExpenses.toFixed(2)}
                 </p>

@@ -9,7 +9,7 @@ function Home() {
   const [display, setDisplay] = useState("minimized")
 
   return (
-      <div className="main-container bg-gray-100 flex flex-col sm:flex-row gap-2 sm:p-2 lg:p-2">
+      <div className="main-container flex flex-col sm:flex-row gap-2 sm:p-2 lg:p-2">
         <TransactionForm />
         <BudgetDisplay />
         <Table display={display} /> 

@@ -4,41 +4,12 @@
 @tailwind forms;
 
 *{
-
   box-sizing: border-box;
 }
 body, html{
  
   margin: 0;
   padding: 0;
-}
 
-.icon {
-  font-size: 1.5em;
-}
-.actual-container,
-.budget-container {
-  display: flex;
-  justify-content: space-around;
-  padding: 1rem;
-}
-.conclusion-container {
-  border-radius: 10px;
-  width: 300px;
-  margin: auto;
-}
-.positive,
-.income {
-  background-color: rgb(134 239 172);
-}
-.negative,
-.expenses {
-  background-color: rgb(253 164 175);
-}
-
-.transaction-wrapper {
-  width: 20px;
-  height: 20px;
-  border-radius: 30px;
 }
 

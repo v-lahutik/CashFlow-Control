@@ -1,7 +1,6 @@
 import { useContext, useState } from "react";
 import { BudgetContext } from "../context/Context.jsx";
 
-
 function TransactionForm() {
   const { dispatch } = useContext(BudgetContext);
   const [transactionType, setTransactionType] = useState("");
@@ -83,7 +82,7 @@ function TransactionForm() {
       : ["Salary", "Investment", "Side Business", "Add new income"];
 
   return (
-    <div className="bg-white rounded-lg p-4 ring ring-indigo-50 sm:p-6 lg:p-8 max-w-screen-xl mx-auto min-w-96 ">
+    <div className="border-2 bg-white sm:p-6 lg:p-8 max-w-screen-xl mx-auto min-w-96">
       <div className="text-center">
         <h1 className="text-2xl font-bold sm:text-3xl">
           Start logging your transactions

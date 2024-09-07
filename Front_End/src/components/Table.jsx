@@ -91,7 +91,7 @@ function Table({ display }) {
     <>
       {display === "minimized" ? (
         <>
-          <div className=" bg-white p-4 rounded-lg ring ring-indigo-50 sm:p-6 lg:p-8 w-full">
+          <div className="border-2 p-4 sm:p-6 lg:p-8 w-full">
             <span className="flex justify-center mt-2 pb-2 relative">
               <h2 className="text-center text-2xl font-bold mb-4 py-6">
                 Transaction List
@@ -222,7 +222,8 @@ function Table({ display }) {
         </>
       ) : (
         // full table
-        <div className="bg-white rounded-s p-4 ring ring-indigo-50 w-full max-w-screen-xl mx-auto">
+        <div className="my-8 mx-auto max-w-screen-lg p-4 bg-white shadow-lg rounded-lg">
+        
           <div className="mx-auto max-w-lg text-center mt-4 m-10">
             <h2 className="text-2xl font-bold sm:text-3xl">Transaction List</h2>
           </div>
