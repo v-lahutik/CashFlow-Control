@@ -5,23 +5,16 @@ import Table from './Table.jsx'
 import BudgetDisplay from './BudgetDisplay.jsx'
 
 
-
 function Home() {
-  const [display, setDisplay] = useState("budget");
-
-  const toggleView = () => {
-    setDisplay((prev) => (prev === "budget" ? "table" : "budget"));
-  };
+  const [display, setDisplay] = useState("minimized")
 
   return (
-    <div className="main-container bg-gray-100 p-2 sm:p-4 lg:p-6">
-      <div className="top-container flex flex-col sm:flex-row gap-4">
+      <div className="main-container bg-gray-100 flex flex-col sm:flex-row gap-2 sm:p-2 lg:p-2">
         <TransactionForm />
         <BudgetDisplay />
+        <Table display={display} /> 
       </div>
-     
-    </div>
+    
   );
 }
-
 export default Home;

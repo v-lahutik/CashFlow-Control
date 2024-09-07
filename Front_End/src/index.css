@@ -12,6 +12,7 @@ body, html{
   margin: 0;
   padding: 0;
 }
+
 .icon {
   font-size: 1.5em;
 }
@@ -40,3 +41,4 @@ body, html{
   height: 20px;
   border-radius: 30px;
 }
+
