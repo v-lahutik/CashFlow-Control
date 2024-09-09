@@ -55,8 +55,8 @@ function BudgetDisplay() {
               placeholder="Set yearly income goal"
             />
             <p className="mt-2 text-sm text-gray-600 text-center font-semibold">
-              Monthly Income Goal:
-              <span className="text-green-600">€{monthlyGoal}</span>
+              Monthly Goal: 
+              <span className="text-green-600"> €{monthlyGoal}</span>
             </p>
           </article>
 

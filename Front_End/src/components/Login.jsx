@@ -5,25 +5,34 @@ import { Link } from 'react-router-dom';
 function Login() {
   const [user, setUser] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
+  const [message, setMessage] = useState("");
+  
 
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
       const res = await axios({
-        url: "http://localhost:5000/users/login",
+        url: "http://localhost:4000/users/login",
         method: "POST",
         data: user,
         headers: {
           "Content-Type": "application/json",
         },
+        withCredentials: true,
       });
-      console.log(res.data); 
+      console.log("res",res.data.status); 
+      setMessage(res.data.status);
+      setErrors({});
+      setUser({ email: "", password: "" });
     } catch (error) {
-      if (error.response) {
+      if (error.response) {   
         setErrors({ ...errors, res: error.response.data.error });
+        setMessage(error.response.data.error);
         console.log(error.response.data.error);
       } else {
         console.log("An unexpected error occurred:", error.message);
+        setErrors({ ...errors, res: "An unexpected error occurred" });
+        setMessage(error.response.data.error);
       }
     }
   };
@@ -52,6 +61,7 @@ function Login() {
                   id="email"
                   name="email"
                   type="email"
+                  value={user.email}
                   required
                   autoComplete="email"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -69,6 +79,7 @@ function Login() {
                   id="password"
                   name="password"
                   type="password"
+                  value={user.password}
                   required
                   autoComplete="current-password"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -91,7 +102,11 @@ function Login() {
       Not a member?
       <Link to="/register" class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"> Register here</Link>
     </p>
-
+    {message && (
+            <div className={`mt-4 p-4 ${errors.res ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'} rounded-md`}>
+              {message}
+            </div>
+          )}
         </div>
       </div>
     </>

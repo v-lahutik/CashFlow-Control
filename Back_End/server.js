@@ -3,7 +3,9 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import userRouter from './routers/users.router.js';
 import { connectToDB } from './utils/database.js';
-
+import { createError } from './utils/helper.js';
+import morgan from 'morgan';
+import cookieParser from 'cookie-parser';
 
 dotenv.config();
 const app=express();
@@ -12,8 +14,16 @@ const app=express();
 connectToDB();
 
 //middlewares
+app.use(cors({
+  origin: 'http://localhost:3000', 
+  credentials: true
+}));
+app.use(morgan('dev'));
+app.use(cookieParser())
 app.use(express.json())
-app.use(cors())
+app.use(express.urlencoded({ extended: true}));
+
+
 
 //routers
 app.use('/users', userRouter);
@@ -31,5 +41,5 @@ app.use((err, req, res, next) => {
 
 
 //server
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 4000;
 app.listen(port, console.log(`server is up on port: ${port} 🚀`));
