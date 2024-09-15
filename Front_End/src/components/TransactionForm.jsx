@@ -1,8 +1,11 @@
 import { useContext, useState } from "react";
 import { BudgetContext } from "../context/Context.jsx";
+import axios from "axios";
+import { useAuth } from "../context/AuthContext.jsx";
 
 function TransactionForm() {
-  const { dispatch } = useContext(BudgetContext);
+  const {user}=useAuth();
+  const { dispatch, state } = useContext(BudgetContext);
   const [transactionType, setTransactionType] = useState("");
   const [category, setCategory] = useState("");
   const [amount, setAmount] = useState("");
@@ -37,27 +40,71 @@ function TransactionForm() {
     setDate(e.target.value);
   };
 
-  const submitHandler = (e) => {
+
+  const submitHandler = async (e) => {
     e.preventDefault();
+  
     const finalCategory =
       category === "Add new expense" || category === "Add new income"
         ? customCategory
         : category;
-        dispatch({
-          type: "ADD_TRANSACTION",
-          payload: {
-            type: transactionType, 
-            category: finalCategory, 
-            date: date, 
-            amount: parseFloat(amount).toFixed(2), 
-            month: new Date(date).toLocaleString('default', { month: 'long' }), 
-          },
-        });
+  
+    const newTransaction = {
+      type: transactionType,
+      category: finalCategory,
+      date: date,
+      amount: parseFloat(amount).toFixed(2),
+      month: new Date(date).toLocaleString('default', { month: 'long' }),
+    };
+    dispatch({
+      type: "ADD_TRANSACTION",
+      payload: newTransaction,
+    });
+  
+    try {
+      const userId = user.id; 
+      const budgetData = {
+        budgetGoal: state.budgetGoal,
+        monthlyTracking: state.monthlyTracking,
+        transactions: [...state.transactions, newTransaction], 
+      };
+  
+      const response = await axios.put(`http://localhost:4000/budget/${userId}`, budgetData,{
+        withCredentials: true,
+      });
+  
+  
+    } catch (error) {
+      console.error('Error updating budget data:', error);
+    }
+  
     setTransactionType("");
     setCategory("");
     setAmount("");
     setCustomCategory("");
   };
+
+  // const submitHandler = (e) => {
+  //   e.preventDefault();
+  //   const finalCategory =
+  //     category === "Add new expense" || category === "Add new income"
+  //       ? customCategory
+  //       : category;
+  //       dispatch({
+  //         type: "ADD_TRANSACTION",
+  //         payload: {
+  //           type: transactionType, 
+  //           category: finalCategory, 
+  //           date: date, 
+  //           amount: parseFloat(amount).toFixed(2), 
+  //           month: new Date(date).toLocaleString('default', { month: 'long' }), 
+  //         },
+  //       });
+  //   setTransactionType("");
+  //   setCategory("");
+  //   setAmount("");
+  //   setCustomCategory("");
+  // };
 
   const categories =
     transactionType === "expenses"

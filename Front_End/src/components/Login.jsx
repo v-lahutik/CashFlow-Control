@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext.jsx";
 
 function Login() {
+  const { login } = useAuth();
   const [user, setUser] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
   const [message, setMessage] = useState("");
-  
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -15,24 +16,26 @@ function Login() {
         url: "http://localhost:4000/users/login",
         method: "POST",
         data: user,
+
         headers: {
           "Content-Type": "application/json",
         },
         withCredentials: true,
       });
-      console.log("res",res.data.status); 
+
+      // Call the login function to update user state in context
+      login({ id: res.data.user.id, email: user.email });
+
       setMessage(res.data.status);
       setErrors({});
       setUser({ email: "", password: "" });
     } catch (error) {
-      if (error.response) {   
+      if (error.response) {
         setErrors({ ...errors, res: error.response.data.error });
         setMessage(error.response.data.error);
-        console.log(error.response.data.error);
       } else {
-        console.log("An unexpected error occurred:", error.message);
         setErrors({ ...errors, res: "An unexpected error occurred" });
-        setMessage(error.response.data.error);
+        setMessage("An unexpected error occurred"); // Ensure message is set correctly
       }
     }
   };
@@ -53,7 +56,10 @@ function Login() {
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form className="space-y-6" onSubmit={submitHandler}>
             <div>
-              <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
                 Email address
               </label>
               <div className="mt-2">
@@ -71,7 +77,10 @@ function Login() {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
                 Password
               </label>
               <div className="mt-2">
@@ -97,13 +106,25 @@ function Login() {
               </button>
             </div>
           </form>
- 
-         <p class="mt-10 text-center text-sm text-gray-500">
-      Not a member?
-      <Link to="/register" class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"> Register here</Link>
-    </p>
-    {message && (
-            <div className={`mt-4 p-4 ${errors.res ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'} rounded-md`}>
+
+          <p class="mt-10 text-center text-sm text-gray-500">
+            Not a member?
+            <Link
+              to="/register"
+              class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+            >
+              {" "}
+              Register here
+            </Link>
+          </p>
+          {message && (
+            <div
+              className={`mt-4 p-4 ${
+                errors.res
+                  ? "bg-red-100 text-red-700"
+                  : "bg-green-100 text-green-700"
+              } rounded-md`}
+            >
               {message}
             </div>
           )}

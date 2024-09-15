@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useState } from 'react'
 import axios from 'axios'
+import { BudgetContext } from '../context/Context.jsx'
 
 function Register() {
+  const {dispatch}=useContext(BudgetContext);
   const [user, setUser] = useState({ firstName: "",lastName: "", email: "", password: "" });
   const [errors, setErrors] = useState({}); 
   const [message, setMessage] = useState("");
@@ -16,25 +18,41 @@ function Register() {
         data: user,
         headers: {
           "Content-Type": "application/json",
-        }
+        },
       });
+  
+      // After successful registration, set user and budget state
+      const { user: newUser, budget } = res.data;
+  
+      // Set user and budget data in your state or context
+      dispatch({ type: "SET_USER", payload: newUser });
+      dispatch({ type: "SET_BUDGET_DATA", payload: budget });
+  
+      // Reset the form
+      setUser({ firstName: "", lastName: "", email: "", password: "" });
       setMessage(res.data.message);
       setErrors({});
-      setUser({ firstName: "", lastName: "", email: "", password: "" });
     } catch (error) {
+      console.error("Error during registration:", error);
+  
       if (error.response) {
-        console.error("Backend error:", error.response.data)
-        console.error("FIRST ERROR:", error.response.data.errors[0].msg)
-        console.log("Errors state:", errors);
-        setErrors({ ...errors, res: error.response.data.errors });
-        setMessage(error.response.data.errors[0].msg);
+        // Check if error response data is valid
+        const errorMessages = error.response.data.errors || [];
+        setErrors({ ...errors, res: errorMessages });
+        
+        // Ensure there is at least one error message to access
+        if (errorMessages.length > 0) {
+          setMessage(errorMessages[0].msg); // Safely access the first error message
+        } else {
+          setMessage("An unexpected error occurred");
+        }
       } else {
-        console.error("Unexpected error:", error.message); 
         setErrors({ ...errors, res: "An unexpected error occurred" });
-        setMessage(error.response.data.errors[0].msg);
+        setMessage("Network error or unexpected response");
       }
     }
   };
+  
 
   const changeHandler = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value }); 

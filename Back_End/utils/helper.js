@@ -47,7 +47,7 @@ export const sendEmail = async (user, token) => {
 };
 
 export const emailTemplate = (name, token, userId) => {
-  const link = `https://localhost:5000/users/verify/${token}/${userId}`
+  const link = `https://localhost:4000/users/verify/${token}/${userId}`
 
   return `
   <div style="font-family: Arial, sans-serif; color: #333; background-color: #f9f9f9; padding: 20px;">

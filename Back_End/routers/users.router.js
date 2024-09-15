@@ -9,6 +9,6 @@ const userRouter=express.Router();
 userRouter.route('/register').post(registerValidation,handleValidationErrors, register)
 userRouter.route('/verify/:vtoken/:uid').get(verifyAccount)
 userRouter.route('/login').post(loginValidation, login)
-userRouter.route('/logout').get(logout)
+userRouter.route('/logout').post(logout)
 
 export default userRouter;

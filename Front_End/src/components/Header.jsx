@@ -1,18 +1,20 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { IoIosHome, IoMdLogIn } from "react-icons/io";
+import { IoIosHome, IoMdLogIn, IoMdLogOut } from "react-icons/io";
 import { IoBarChart } from "react-icons/io5";
 import { HiOutlineTableCells } from "react-icons/hi2";
-
 import logo from "../images/logo.png";
+import { useAuth } from "../context/AuthContext";
 
 
 function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const {user, logout} = useAuth();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
+
 
   return (
     <nav className=" border-gray-200 dark:bg-gray-900 w-full">
@@ -126,27 +128,36 @@ function Header() {
               </NavLink>
                </li>
             
+            {/* Show Login/Logout depending on user authentication */}
             <li>
-              <NavLink
-                to="/login"
-                className={({ isActive }) =>
-                  `block py-2 px-3 rounded text-gray-900 
-                ${isActive ? "text-blue-500" : "dark:text-white"} 
-                hover:bg-gray-100 
-                md:hover:bg-transparent 
-                md:border-0 
-                md:hover:text-blue-500 
-                dark:hover:bg-gray-700 
-                dark:hover:text-white 
-                flex items-center`
-                }
-              >
-                <IoMdLogIn className="w-5 h-5 mr-2" />
-                Login
-              </NavLink>
+              {user ? (
+                <button
+                  onClick={logout}
+                  className="block py-2 px-3 rounded text-gray-900 dark:text-white hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white flex items-center"
+                >
+                  <IoMdLogOut className="w-5 h-5 mr-2" />
+                  Logout
+                </button>
+              ) : (
+                <NavLink
+                  to="/login"
+                  className={({ isActive }) =>
+                    `block py-2 px-3 rounded text-gray-900 
+                  ${isActive ? "text-blue-500" : "dark:text-white"} 
+                  hover:bg-gray-100 
+                  md:hover:bg-transparent 
+                  md:border-0 
+                  md:hover:text-blue-500 
+                  dark:hover:bg-gray-700 
+                  dark:hover:text-white 
+                  flex items-center`
+                  }
+                >
+                  <IoMdLogIn className="w-5 h-5 mr-2" />
+                  Login
+                </NavLink>
+              )}
             </li>
-            
-           
           </ul>
         </div>
       </div>

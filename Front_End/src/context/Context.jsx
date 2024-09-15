@@ -1,8 +1,11 @@
 import React, { createContext, useReducer, useEffect, useState } from "react";
+import { useAuth } from "./AuthContext.jsx";
+import axios from "axios";
 
 const BudgetContext = createContext();
 
-const initialState = JSON.parse(localStorage.getItem('budgetState')) || {
+
+const initialState = {
   budgetGoal: 12000, // Default yearly goal
   monthlyTracking: Array.from({ length: 12 }, (_, i) => ({
     month: new Date(0, i).toLocaleString("default", { month: "long" }),
@@ -16,16 +19,27 @@ const initialState = JSON.parse(localStorage.getItem('budgetState')) || {
 
 function budgetReducer(state, action) {
   switch (action.type) {
-    case "SET_BUDGET_GOAL":
-      const newMonthlyGoal = action.payload / 12;
-      return {
-        ...state,
-        budgetGoal: action.payload,
-        monthlyTracking: state.monthlyTracking.map((month) => ({
-          ...month,
-          goal: newMonthlyGoal,
-        })),
-      };
+    // case "SET_BUDGET_GOAL":
+    //   const newMonthlyGoal = action.payload / 12;
+    //   return {
+    //     ...state,
+    //     budgetGoal: action.payload,
+    //     monthlyTracking: state.monthlyTracking.map((month) => ({
+    //       ...month,
+    //       goal: newMonthlyGoal,
+    //     })),
+    //   };
+      case "SET_BUDGET_DATA": {
+        return {
+          ...state,
+          ...action.payload, // Spread the incoming data into the state
+          // If you need to do any calculations, do it here
+          monthlyTracking: action.payload.monthlyTracking.map((month) => ({
+            ...month,
+            goal: action.payload.budgetGoal / 12, // Set monthly goal if needed
+          })),
+        };
+      }
 
       case "ADD_TRANSACTION": {
         const newTransaction = {
@@ -149,14 +163,28 @@ function budgetReducer(state, action) {
   }  
 }
 
-
 const BudgetProvider = ({ children }) => {
+  const { user } = useAuth(); 
   const [state, dispatch] = useReducer(budgetReducer, initialState);
   const [displayedTransaction, setDisplayedTransaction] = useState(state.transactions);
+  
 
   useEffect(() => {
-    localStorage.setItem('budgetState', JSON.stringify(state));
-  }, [state]);
+    if (!user) return; 
+
+    const fetchBudgetData = async () => {
+      try {
+       const response = await axios.get(`http://localhost:4000/budget/${user.id}`, { withCredentials: true });
+        dispatch({ type: "SET_BUDGET_DATA", payload: response.data });
+       
+      } catch (error) {
+        console.error("Error fetching budget data:", error);
+      }
+    };
+
+    fetchBudgetData();
+  }, [user]); // Run effect when user changes
+
 
   return (
     <BudgetContext.Provider value={{ state, dispatch, displayedTransaction, setDisplayedTransaction }}>
