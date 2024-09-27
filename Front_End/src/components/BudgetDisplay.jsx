@@ -29,6 +29,7 @@ function BudgetDisplay() {
   const monthlyGoal = (state.budgetGoal / 12).toFixed(2);
   const remainingOrExceeded = state.budgetGoal - difference;
 
+
   return (
     <div className="flex flex-col w-full pb-4 border-2">
       <div className=" bg-white p-4  sm:p-6 lg:p-8 w-full max-w-screen-xl mx-auto border-b-2 border-gray-300">

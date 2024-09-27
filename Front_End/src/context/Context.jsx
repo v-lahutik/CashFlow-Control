@@ -19,16 +19,7 @@ const initialState = {
 
 function budgetReducer(state, action) {
   switch (action.type) {
-    // case "SET_BUDGET_GOAL":
-    //   const newMonthlyGoal = action.payload / 12;
-    //   return {
-    //     ...state,
-    //     budgetGoal: action.payload,
-    //     monthlyTracking: state.monthlyTracking.map((month) => ({
-    //       ...month,
-    //       goal: newMonthlyGoal,
-    //     })),
-    //   };
+  
       case "SET_BUDGET_DATA": {
         return {
           ...state,
@@ -168,23 +159,29 @@ const BudgetProvider = ({ children }) => {
   const [state, dispatch] = useReducer(budgetReducer, initialState);
   const [displayedTransaction, setDisplayedTransaction] = useState(state.transactions);
   
+  
+  useEffect(() => {
+    console.log("Current user:", user);
+  }, [user]);
+
+  
 
   useEffect(() => {
-    if (!user) return; 
-
     const fetchBudgetData = async () => {
+      if (!user || !user._id) return; // Wait until the user and their ID are available
+
       try {
-       const response = await axios.get(`http://localhost:4000/budget/${user.id}`, { withCredentials: true });
+        const response = await axios.get(`http://localhost:4000/budget/${user._id}`, { withCredentials: true });
         dispatch({ type: "SET_BUDGET_DATA", payload: response.data });
-       
       } catch (error) {
         console.error("Error fetching budget data:", error);
       }
     };
 
-    fetchBudgetData();
-  }, [user]); // Run effect when user changes
+    fetchBudgetData(); // Only fetch when user is not null and user._id is available
+  }, [user]); // Only run when the user is set
 
+  
 
   return (
     <BudgetContext.Provider value={{ state, dispatch, displayedTransaction, setDisplayedTransaction }}>

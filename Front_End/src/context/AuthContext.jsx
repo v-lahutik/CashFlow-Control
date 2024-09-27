@@ -1,12 +1,32 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+
+
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const checkUserSession = async () => {
+      try {
+        const response = await axios.get("http://localhost:4000/users/me", {
+          withCredentials: true, // This ensures cookies are sent with the request
+        });
+        if (response.data.user) {
+          setUser(response.data.user);
+        }
+      } catch (error) {
+        console.error("Error fetching user session:", error);
+        // You may want to handle errors here (e.g., token invalid or expired)
+      }
+    };
+
+    checkUserSession();
+  }, []);
 
   const login = (userData) => {
     setUser(userData);
