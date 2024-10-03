@@ -42,6 +42,11 @@ const BudgetChart = () => {
           title: {
             text: ' Income and Expenses',
             display: false,
+            font: {
+              size: 24,
+              weight: 'bold',
+              color: 'white', 
+            },
           },
           tooltip: {
             callbacks: {
@@ -64,11 +69,24 @@ const BudgetChart = () => {
               display: false,
               text: 'Month',
             },
+            ticks: {
+              autoSkip: false, // Ensure all months are displayed
+              color: 'white', // Set x-axis ticks color to white
+            },
+            grid: {
+              color: 'rgba(255, 255, 255, 0.1)', // Light grid lines for x-axis
+            },
           },
           y: {
             title: {
               display: true,
               text: 'Amount (€)',
+            },
+            grid: {
+              color: 'rgba(255, 255, 255, 0.1)', // Light grid lines for y-axis
+            },
+            ticks: {
+              color: 'white', // Set y-axis ticks color to white
             },
             beginAtZero: true, // Start y-axis at zero
           },
@@ -84,16 +102,16 @@ const BudgetChart = () => {
     };
   }, [state.monthlyTracking]); // Update the chart if monthlyTracking changes
 
- return (
-  <>
-    <div className="my-8 mx-auto max-w-screen-lg p-4 bg-white shadow-lg rounded-lg">
-      <h2 className="text-2xl font-bold text-center mb-6">Yearly Income and Expenses Overview</h2> 
-      <div style={{ position: 'relative', height: '400px', width: '100%' }}>
-        <canvas id="budgetChart"></canvas>
+  return (
+    <>
+      <div className="my-8 mx-auto max-w-screen-lg p-4 bg-gray-900 shadow-lg rounded-lg">
+        <h2 className="text-2xl font-bold text-center mb-6 text-white">Yearly Income and Expenses Overview</h2> 
+        <div style={{ position: 'relative', height: '400px', width: '100%' }}>
+          <canvas id="budgetChart"></canvas>
+        </div>
       </div>
-    </div>
-    <ExpenseCategoryChart />
-    <IncomeChart />
+      <ExpenseCategoryChart />
+      <IncomeChart />
     </>
   );
 };

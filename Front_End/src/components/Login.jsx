@@ -16,14 +16,13 @@ function Login() {
         url: "http://localhost:4000/users/login",
         method: "POST",
         data: user,
-
         headers: {
           "Content-Type": "application/json",
         },
         withCredentials: true,
       });
 
-      // Call the login function to update user state in context
+      // Call the login function to update user state in AuthContext
       login({ id: res.data.user.id, email: user.email });
 
       setMessage(res.data.status);
@@ -46,9 +45,9 @@ function Login() {
 
   return (
     <>
-      <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+      <div className=" flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-white">
             Login
           </h2>
         </div>
@@ -58,7 +57,7 @@ function Login() {
             <div>
               <label
                 htmlFor="email"
-                className="block text-sm font-medium leading-6 text-gray-900"
+                className="block text-sm font-medium leading-6 text-gray-300"
               >
                 Email address
               </label>
@@ -70,7 +69,7 @@ function Login() {
                   value={user.email}
                   required
                   autoComplete="email"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   onChange={changeHandler}
                 />
               </div>
@@ -79,7 +78,7 @@ function Login() {
             <div>
               <label
                 htmlFor="password"
-                className="block text-sm font-medium leading-6 text-gray-900"
+                className="block text-sm font-medium leading-6 text-gray-300"
               >
                 Password
               </label>
@@ -91,7 +90,7 @@ function Login() {
                   value={user.password}
                   required
                   autoComplete="current-password"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   onChange={changeHandler}
                 />
               </div>
@@ -107,11 +106,11 @@ function Login() {
             </div>
           </form>
 
-          <p class="mt-10 text-center text-sm text-gray-500">
+          <p class="mt-10 text-center text-sm text-gray-300">
             Not a member?
             <Link
               to="/register"
-              class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+              class="font-semibold leading-6 text-indigo-300 hover:text-indigo-700"
             >
               {" "}
               Register here

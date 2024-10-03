@@ -3,25 +3,28 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 
-
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true); // Add loading state to manage data fetch timing
   const navigate = useNavigate();
 
   useEffect(() => {
     const checkUserSession = async () => {
       try {
         const response = await axios.get("http://localhost:4000/users/me", {
-          withCredentials: true, // This ensures cookies are sent with the request
+          withCredentials: true, 
         });
         if (response.data.user) {
           setUser(response.data.user);
+          console.log("User session found", response.data.user);
         }
       } catch (error) {
         console.error("Error fetching user session:", error);
-        // You may want to handle errors here (e.g., token invalid or expired)
+        setUser(null);
+      } finally {
+        setLoading(false); // Stop loading after fetching the session
       }
     };
 
@@ -31,6 +34,8 @@ export const AuthProvider = ({ children }) => {
   const login = (userData) => {
     setUser(userData);
     navigate("/");
+    console.log("User logged in", userData);
+     //window.location.reload();
   };
 
   const logout = async () => {
@@ -42,6 +47,7 @@ export const AuthProvider = ({ children }) => {
       );
       setUser(null);
       navigate("/");
+      window.location.reload();
     } catch (error) {
       console.error("Error during logout:", error);
     }

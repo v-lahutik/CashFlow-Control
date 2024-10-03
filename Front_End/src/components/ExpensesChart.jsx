@@ -51,7 +51,7 @@ const ExpenseCategoryChart = () => {
       datasets: categories.map(category => ({
         label: category.charAt(0).toUpperCase() + category.slice(1), // Capitalize category names
         backgroundColor: `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, 0.5)`, // Random color for each category
-        borderColor: 'rgba(0, 0, 0, 1)', // Black border
+        borderColor: 'rgba(255, 255, 255, 1)', // White border for better contrast
         data: months.map(month => Math.abs(categoryData[month]?.[category] || 0)), // Get data for each category, using absolute values
       })),
     };
@@ -69,6 +69,7 @@ const ExpenseCategoryChart = () => {
             font: {
               size: 24,
               weight: 'bold',
+              color: 'white', // White title color (if displayed)
             },
           },
         },
@@ -81,6 +82,10 @@ const ExpenseCategoryChart = () => {
             },
             ticks: {
               autoSkip: false, // Ensure all months are displayed
+              color: 'white', // Set x-axis ticks color to white
+            },
+            grid: {
+              color: 'rgba(255, 255, 255, 0.1)', // Light grid lines for x-axis
             },
           },
           y: {
@@ -88,9 +93,16 @@ const ExpenseCategoryChart = () => {
             title: {
               display: true,
               text: 'Amount (€)',
+              color: 'white', // Set y-axis title color to white
+            },
+            ticks: {
+              color: 'white', // Set y-axis ticks color to white
             },
             beginAtZero: true,
             min: 0, // Set the minimum value to 0
+            grid: {
+              color: 'rgba(255, 255, 255, 0.1)', // Light grid lines for y-axis
+            },
           },
         },
       },
@@ -105,8 +117,8 @@ const ExpenseCategoryChart = () => {
   }, [state.transactions]); // Update the chart if transactions change
 
   return (
-    <div className="my-8 mx-auto max-w-screen-lg p-4 bg-white shadow-lg rounded-lg">
-      <h2 className="text-3xl font-bold text-center mb-6">Monthly Expenses</h2>
+    <div className="my-8 mx-auto max-w-screen-lg p-4 bg-gray-900 shadow-lg rounded-lg">
+      <h2 className="text-3xl font-bold text-center mb-6 text-white">Monthly Expenses</h2>
       <div style={{ position: 'relative', height: '500px', width: '100%' }}>
         <canvas id="expenseCategoryChart"></canvas>
       </div>

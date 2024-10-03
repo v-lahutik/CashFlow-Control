@@ -6,7 +6,7 @@ import { createError } from "../utils/helper.js";
 export const authenticateUser = async (req, res, next) => {
   try {
     const cookies = req.cookies;
-     console.log("req data:", req.cookies);
+    //  console.log("req data:", req.cookies);
 
     if (!cookies) {
       console.log("No cookies found");
@@ -17,7 +17,7 @@ export const authenticateUser = async (req, res, next) => {
     }
 
     const token = req.cookies.token;
-    console.log("Token from cookies:", token);
+    // console.log("Token from cookies:", token);
    
     if (!token) {
       console.log("No token found in cookies");
@@ -28,10 +28,10 @@ export const authenticateUser = async (req, res, next) => {
     }
 
     const token_payload = await verifyToken(token, process.env.JWT_SECRET);
-    console.log("Token Payload:", token_payload);
+    // console.log("Token Payload:", token_payload);
 
     const user = await User.findById(token_payload.id);
-    console.log("User from DB:", user);
+    // console.log("User from DB:", user);
 
     if (!user) {
       console.log("User not found");

@@ -1,7 +1,8 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { BudgetContext } from "../context/Context.jsx";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext.jsx";
+import { formatDate } from "../utils/formatDate.js";
 
 function TransactionForm() {
   const {user}=useAuth();
@@ -40,71 +41,76 @@ function TransactionForm() {
     setDate(e.target.value);
   };
 
-
+  useEffect(() => {
+    const updateBackend = async () => {
+      if (state.transactions.length === 0) return;
+      console.log("initial transactions", state.transactions);
+  
+      try {
+        const userId = user._id;
+  
+        // Format transactions again just before sending
+        const formattedTransactions = state.transactions.map(transaction => ({
+          ...transaction,
+          date: formatDate(transaction.date) // Ensure date is in the correct format
+        }));
+  
+        const budgetData = {
+          budgetGoal: state.budgetGoal,
+          monthlyTracking: state.monthlyTracking,
+          transactions: formattedTransactions,
+        };
+  
+        // Log the formatted budgetData
+        console.log("Budget data being sent:", budgetData);
+  
+        const response = await axios.put(
+          `http://localhost:4000/budget/${userId}`,
+          budgetData,
+          { withCredentials: true }
+        );
+        
+        console.log("Updated budget data:", response.data);
+      } catch (error) {
+        console.error("Error updating budget data:", error);
+      }
+    };
+  
+    updateBackend();
+  }, [ state.monthlyTracking]);
+  
   const submitHandler = async (e) => {
     e.preventDefault();
-  
+
     const finalCategory =
       category === "Add new expense" || category === "Add new income"
         ? customCategory
         : category;
-  
+
+    // Format the date using the formatDate function
+    const formattedDate = formatDate(date);
+
     const newTransaction = {
       type: transactionType,
       category: finalCategory,
-      date: date,
+      date: formattedDate, // Use the formatted date here
       amount: parseFloat(amount).toFixed(2),
-      month: new Date(date).toLocaleString('default', { month: 'long' }),
+      month: new Date(formattedDate).toLocaleString('default', { month: 'long' }), // Get the month from the formatted date
     };
+
+    // Dispatch the new transaction to update state
     dispatch({
       type: "ADD_TRANSACTION",
       payload: newTransaction,
     });
-  
-    try {
-      const userId = user.id; 
-      const budgetData = {
-        budgetGoal: state.budgetGoal,
-        monthlyTracking: state.monthlyTracking,
-        transactions: [...state.transactions, newTransaction], 
-      };
-  
-      const response = await axios.put(`http://localhost:4000/budget/${userId}`, budgetData,{
-        withCredentials: true,
-      });
-  
-  
-    } catch (error) {
-      console.error('Error updating budget data:', error);
-    }
-  
+    console.log("New transaction:", newTransaction);
+
+    // Clear form inputs
     setTransactionType("");
     setCategory("");
     setAmount("");
     setCustomCategory("");
   };
-
-  // const submitHandler = (e) => {
-  //   e.preventDefault();
-  //   const finalCategory =
-  //     category === "Add new expense" || category === "Add new income"
-  //       ? customCategory
-  //       : category;
-  //       dispatch({
-  //         type: "ADD_TRANSACTION",
-  //         payload: {
-  //           type: transactionType, 
-  //           category: finalCategory, 
-  //           date: date, 
-  //           amount: parseFloat(amount).toFixed(2), 
-  //           month: new Date(date).toLocaleString('default', { month: 'long' }), 
-  //         },
-  //       });
-  //   setTransactionType("");
-  //   setCategory("");
-  //   setAmount("");
-  //   setCustomCategory("");
-  // };
 
   const categories =
     transactionType === "expenses"
@@ -128,146 +134,147 @@ function TransactionForm() {
         ]
       : ["Salary", "Investment", "Side Business", "Add new income"];
 
-  return (
-    <div className="border-2 bg-white sm:p-6 lg:p-8 max-w-screen-xl mx-auto min-w-96">
-      <div className="text-center">
-        <h1 className="text-2xl font-bold sm:text-3xl">
-          Start logging your transactions
-        </h1>
-        <p className="mt-4 text-gray-500">
-          Stay on top of your finances effortlessly.
-        </p>
-      </div>
-
-      <form
-        onSubmit={submitHandler}
-        action="#"
-        className="mx-auto mb-0 mt-8 max-w-md space-y-4"
-      >
-        <div className="grid grid-cols-1 gap-4 text-center sm:grid-cols-3">
-          <div>
-            <label
-              className="block w-full cursor-pointer rounded-lg border border-gray-200 p-3 text-gray-600 hover:border-black has-[:checked]:border-black has-[:checked]:bg-black has-[:checked]:text-white"
-              tabIndex="0"
-            >
-              <input
-                type="radio"
-                className="sr-only"
-                name="transactionType"
-                id="transactionType"
-                tabIndex="-1"
-                value="income"
-                checked={transactionType === "income"}
-                onChange={handleTransactionType}
+      return (
+        <div className="border-2 border-gray-700 bg-gray-900 sm:p-6 lg:p-8 max-w-screen-xl mx-auto min-w-96 text-white">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold sm:text-3xl text-white">
+              Start logging your transactions
+            </h1>
+            <p className="mt-4 text-gray-400">
+              Stay on top of your finances effortlessly.
+            </p>
+          </div>
+      
+          <form
+            onSubmit={submitHandler}
+            action="#"
+            className="mx-auto mb-0 mt-8 max-w-md space-y-4 "
+          >
+            <div className="grid grid-cols-1 gap-4 text-center sm:grid-cols-3">
+              <div>
+                <label
+                  className="block w-full cursor-pointer rounded-lg border border-gray-700 bg-gray-800 p-3 text-gray-300 hover:border-green-500 hover:bg-gray-700 has-[:checked]:border-green-500 has-[:checked]:bg-green-600 has-[:checked]:text-white"
+                  tabIndex="0"
+                >
+                  <input
+                    type="radio"
+                    className="sr-only"
+                    name="transactionType"
+                    id="transactionType"
+                    tabIndex="-1"
+                    value="income"
+                    checked={transactionType === "income"}
+                    onChange={handleTransactionType}
+                    required
+                  />
+                  <span className="text-sm"> Income</span>
+                </label>
+              </div>
+      
+              <div>
+                <label
+                  className="block w-full cursor-pointer rounded-lg border border-gray-700 bg-gray-800 p-3 text-gray-300 hover:border-red-500 hover:bg-gray-700 has-[:checked]:border-red-500 has-[:checked]:bg-red-600 has-[:checked]:text-white"
+                  tabIndex="0"
+                >
+                  <input
+                    type="radio"
+                    className="sr-only"
+                    name="transactionType"
+                    id="transactionType"
+                    tabIndex="-1"
+                    value="expenses"
+                    checked={transactionType === "expenses"}
+                    onChange={handleTransactionType}
+                    required
+                  />
+                  <span className="text-sm"> Expense</span>
+                </label>
+              </div>
+            </div>
+      
+            <div>
+              <label
+                htmlFor="categories"
+                className="block text-sm font-medium text-gray-300"
+              >
+                Categories
+              </label>
+      
+              <select
+                className="mt-1.5 p-3 w-full rounded-lg border border-gray-600 bg-gray-800 text-gray-300 sm:text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                name="categories"
+                id="categories"
+                onChange={handleCategoryChange}
                 required
-              />
-              <span className="text-sm"> Income</span>
-            </label>
-          </div>
-
-          <div>
-            <label
-              className="block w-full cursor-pointer rounded-lg border border-gray-200 p-3 text-gray-600 hover:border-black has-[:checked]:border-black has-[:checked]:bg-black has-[:checked]:text-white"
-              tabIndex="0"
-            >
-              <input
-                type="radio"
-                className="sr-only"
-                name="transactionType"
-                id="transactionType"
-                tabIndex="-1"
-                value="expenses"
-                checked={transactionType === "expenses"}
-                onChange={handleTransactionType}
-                required
-              />
-              <span className="text-sm">Expense</span>
-            </label>
-          </div>
+              >
+                <option value="">Category</option>
+                {categories.map((category) => (
+                  <option key={category} value={category}>
+                    {category}
+                  </option>
+                ))}
+              </select>
+            </div>
+      
+            {(category === "Add new expense" || category === "Add new income") && (
+              <div className="form-group">
+                <label htmlFor="customCategory" className="text-gray-300"></label>
+                <input
+                  className="w-full rounded-lg border border-gray-600 bg-gray-800 p-4 text-sm text-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                  type="text"
+                  id="customCategory"
+                  placeholder="Enter new category"
+                  value={customCategory}
+                  onChange={handleCustomCategoryChange}
+                  required
+                />
+              </div>
+            )}
+      
+            <div>
+              <label htmlFor="date" className="sr-only">
+                Date
+              </label>
+              <div className="relative">
+                <input
+                  type="date"
+                  value={formatDate(date)}
+                  onChange={handleDateChange}
+                  className="w-full rounded-lg border border-gray-600 bg-gray-800 p-4 text-sm text-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                  required
+                />
+              </div>
+            </div>
+      
+            <div>
+              <label htmlFor="amount" className="sr-only">
+                Amount
+              </label>
+              <div className="relative">
+                <input
+                  type="number"
+                  id="amount"
+                  className="w-full rounded-lg border border-gray-600 bg-gray-800 p-4 text-sm text-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                  placeholder="Amount"
+                  value={amount}
+                  onChange={handleAmountChange}
+                  required
+                />
+              </div>
+            </div>
+      
+            <div className="flex items-center justify-center">
+              <button
+                type="submit"
+                className="inline-block rounded-lg bg-green-600 border-2 border-green-500 px-5 py-3 text-sm font-medium text-white w-36 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+              >
+                Add
+              </button>
+            </div>
+          </form>
         </div>
-
-        <div>
-          <label
-            htmlFor="categories"
-            className="block text-sm font-medium text-gray-900"
-          >
-            {" "}
-            Categories{" "}
-          </label>
-
-          <select
-            className="mt-1.5 p-3 w-full rounded-lg border-gray-300 text-gray-700 sm:text-sm "
-            name="categories"
-            id="categories"
-            onChange={handleCategoryChange}
-            required
-          >
-            <option value="">Category</option>
-            {categories.map((category) => (
-              <option key={category} value={category}>
-                {category}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {(category === "Add new expense" || category === "Add new income") && (
-          <div className="form-group">
-            <label htmlFor="customCategory"></label>
-            <input
-              className="w-full rounded-lg border-gray-200 p-4 text-sm shadow-sm"
-              type="text"
-              id="customCategory"
-              placeholder="enter new category"
-              value={customCategory}
-              onChange={handleCustomCategoryChange}
-              required
-            />
-          </div>
-        )}
-
-        <div>
-          <label htmlFor="date" className="sr-only">
-            Date
-          </label>
-          <div className="relative">
-            <input
-              type="date"
-              value={date}
-              onChange={handleDateChange}
-              className="w-full rounded-lg border-gray-200 p-4 text-sm shadow-sm"
-            />
-          </div>
-        </div>
-
-        <div>
-          <label htmlFor="amount" className="sr-only">
-            Amount
-          </label>
-          <div className="relative">
-            <input
-              type="number"
-              id="amount"
-              className="w-full rounded-lg border-gray-200 p-4 text-sm shadow-sm"
-              placeholder="Amount"
-              value={amount}
-              onChange={handleAmountChange}
-              required
-            />
-          </div>
-        </div>
-
-        <div className="flex items-center justify-center">
-          <button
-            type="submit"
-            className="inline-block rounded-lg bg-green-300 border-2 border-blue-300 px-5 py-3 text-sm font-medium text-grey-500 w-36"
-          >
-            Add
-          </button>
-        </div>
-      </form>
-    </div>
-  );
+      );
+      
 }
 
 export default TransactionForm;
