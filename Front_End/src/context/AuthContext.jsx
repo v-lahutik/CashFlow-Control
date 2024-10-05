@@ -14,20 +14,22 @@ export const AuthProvider = ({ children }) => {
     const checkUserSession = async () => {
       try {
         const response = await axios.get("http://localhost:4000/users/me", {
-          withCredentials: true, 
+          withCredentials: true, // This sends the cookies with the request
         });
         if (response.data.user) {
-          setUser(response.data.user);
-          console.log("User session found", response.data.user);
+          setUser(response.data.user); // Set the user if found
+          //console.log("User session found", response.data.user);
+        } else {
+          setUser(null); // No user found
         }
       } catch (error) {
         console.error("Error fetching user session:", error);
-        setUser(null);
+        setUser(null); // Clear user state on error
       } finally {
-        setLoading(false); // Stop loading after fetching the session
+        setLoading(false); // Stop loading state
       }
     };
-
+  
     checkUserSession();
   }, []);
 
@@ -35,7 +37,7 @@ export const AuthProvider = ({ children }) => {
     setUser(userData);
     navigate("/");
     console.log("User logged in", userData);
-     //window.location.reload();
+    window.location.reload();
   };
 
   const logout = async () => {
@@ -54,7 +56,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, loading}}>
       {children}
     </AuthContext.Provider>
   );

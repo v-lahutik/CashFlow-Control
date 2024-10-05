@@ -20,8 +20,18 @@ const initialState = {
 
 function budgetReducer(state, action) {
   switch (action.type) {
+    case "SET_BUDGET_GOAL": {
+      const newBudgetGoal = action.payload;
+      return {
+        ...state,
+        budgetGoal: newBudgetGoal,
+        monthlyTracking: state.monthlyTracking.map((month) => ({
+          ...month,
+          goal: newBudgetGoal / 12, // Recalculate monthly goal based on new yearly goal
+        })),
+      };
+    }
   
-    
     case "SET_BUDGET_DATA": {
       return {
         ...state,
@@ -34,11 +44,10 @@ function budgetReducer(state, action) {
       };
     }
 
-
       case "ADD_TRANSACTION": {
         const newTransaction = {
-          
             ...action.payload,
+            transactionId: uuidv4()
            
      
         };
@@ -74,41 +83,42 @@ function budgetReducer(state, action) {
         };
     }
     case "DELETE_TRANSACTION": {
-      // Find the transaction to delete before filtering it out
       const transactionToDelete = state.transactions.find(
-        (transaction) => transaction._id === action.payload
+        (transaction) => transaction.transactionId === action.payload
       );
     
-      // Filter out the deleted transaction
       const updatedTransactions = state.transactions.filter(
-        (transaction) => transaction._id !== action.payload
+        (transaction) => transaction.transactionId !== action.payload
       );
     
-      // If no transaction was found, return the current state
       if (!transactionToDelete) return state;
     
-      // Update the monthly tracking based on the deleted transaction
       const updatedMonthlyTracking = state.monthlyTracking.map((month) => {
         if (month.month === transactionToDelete.month) {
           let newActualIncome = month.actualIncome;
           let newActualExpenses = month.actualExpenses;
     
+          console.log("Deleting transaction:", transactionToDelete);
+          console.log("Current actualExpenses before deletion:", month.actualExpenses);
+    
           // Reverse the effects of the deleted transaction
           if (transactionToDelete.type === "income") {
-            newActualIncome -= parseFloat(transactionToDelete.amount);
+            newActualIncome -= parseFloat(transactionToDelete.amount); // Assuming amount is positive for income
           } else if (transactionToDelete.type === "expenses") {
-            newActualExpenses -= Math.abs(parseFloat(transactionToDelete.amount));
+            console.log("transactionToDelete.amount", transactionToDelete.amount);
+            newActualExpenses += Math.abs(parseFloat(transactionToDelete.amount)); // Amount should be treated as positive
           }
     
+          console.log("Updated actualExpenses after deletion:", newActualExpenses);
+    
           // Recalculate whether the goal was met after the deletion
-          const goalMet = newActualIncome - newActualExpenses >= month.goal;
+          const goalMet = newActualIncome + newActualExpenses >= month.goal;
     
           return {
             ...month,
             actualIncome: newActualIncome,
             actualExpenses: newActualExpenses,
             goalMet,
-            id: month._id
           };
         }
     
@@ -126,13 +136,13 @@ function budgetReducer(state, action) {
   case "EDIT_TRANSACTION": {
     console.log("edit transaction context", action.payload)
     const transactionToEdit = state.transactions.find(
-        (transaction) => transaction._id === action.payload.id
+        (transaction) => transaction.transactionId  === action.payload.id
     );
 
     if (!transactionToEdit) return state;
 
     const updatedTransactions = state.transactions.map(transaction =>
-        transaction._id === action.payload.id
+        transaction.transactionId  === action.payload.id
             ? { ...transaction, ...action.payload.transaction }
             : transaction
     );
@@ -141,8 +151,6 @@ function budgetReducer(state, action) {
 
     const updatedMonthlyTracking = state.monthlyTracking.map((month) => {
 
-      console.log("month. month", month.month)
-            console.log("tra edit ", transactionToEdit)
 
         if (month.month === transactionToEdit.month) {
                
@@ -193,15 +201,14 @@ const BudgetProvider = ({ children }) => {
   useEffect(() => {
     const fetchBudgetData = async () => {
       if (!user || !user._id) return; // Wait until the complete user data is available
-      console.log("user from budget context", user)
-      console.log("user ID from budget context", user._id)
+     
       try {
         const response = await axios.get(`http://localhost:4000/budget/${user._id}`, {
           withCredentials: true,
           
         });
         dispatch({ type: "SET_BUDGET_DATA", payload: response.data });
-        console.log("response from budget context", response.data)
+        
       } catch (error) {
         console.error("Error fetching budget data:", error);
       }

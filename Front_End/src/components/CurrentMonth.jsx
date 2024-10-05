@@ -10,23 +10,39 @@ function CurrentMonth() {
     month: "long",
   });
 
+  // Filter transactions for the current month and by type (income/expenses)
+  const currentMonthTransactions = state.transactions.filter(
+    (transaction) => {
+      const transactionMonth = new Date(transaction.date).toLocaleString(
+        "default",
+        { month: "long" }
+      );
+      return transactionMonth === currentMonthName;
+    }
+  );
+
+  const currentMonthIncome = currentMonthTransactions
+    .filter((transaction) => transaction.type === "income")
+    .reduce((acc, curr) => acc + parseFloat(curr.amount), 0);
+
+  const currentMonthExpenses = currentMonthTransactions
+    .filter((transaction) => transaction.type === "expenses")
+    .reduce((acc, curr) => acc + parseFloat(curr.amount), 0);
+
   const currentMonth = state.monthlyTracking.find(
     (month) => month.month === currentMonthName
   ) || {
-    actualIncome: 0,
-    actualExpenses: 0,
     goal: 0,
   };
 
-  const currentMonthBalance =
-    currentMonth.actualIncome - Math.abs(currentMonth.actualExpenses);
-
+  const currentMonthBalance = currentMonthIncome + currentMonthExpenses; 
   const progressPercentage = Math.min(
-    ((currentMonth.actualIncome / currentMonth.goal) * 100).toFixed(2),
+    ((currentMonthIncome / currentMonth.goal) * 100).toFixed(2),
     100
   );
+
   return (
-    <div className="p-4 rounded-lg sm:p-6 lg:p-8 w-full max-w-screen-xl mx-auto mt-4  shadow-lg">
+    <div className="p-4 rounded-lg sm:p-6 lg:p-8 w-full max-w-screen-xl mx-auto mt-4 shadow-lg">
       <h2 className="text-center text-2xl font-bold mb-4 py-4 text-white">
         {currentMonthName} Budget Details
       </h2>
@@ -66,13 +82,9 @@ function CurrentMonth() {
             </div>
 
             <p className="text-sm text-gray-600 mt-1">
-              {currentMonth.actualIncome >= currentMonth.goal
-                ? `€${(currentMonth.actualIncome - currentMonth.goal).toFixed(
-                    2
-                  )} over your goal`
-                : `€${(currentMonth.goal - currentMonth.actualIncome).toFixed(
-                    2
-                  )} left until your goal`}
+              {currentMonthIncome >= currentMonth.goal
+                ? `€${(currentMonthIncome - currentMonth.goal).toFixed(2)} over your goal`
+                : `€${(currentMonth.goal - currentMonthIncome).toFixed(2)} left until your goal`}
             </p>
 
             <p className="text-sm text-gray-600 mt-4">
@@ -99,7 +111,7 @@ function CurrentMonth() {
               <div>
                 <p className="text-sm text-gray-600">Total Income</p>
                 <p className="text-xl text-center font-medium text-gray-900">
-                  €{currentMonth.actualIncome.toFixed(2)}
+                  €{currentMonthIncome.toFixed(2)}
                 </p>
               </div>
             </div>
@@ -113,7 +125,7 @@ function CurrentMonth() {
               <div>
                 <p className="text-sm text-gray-600">Total Expenses</p>
                 <p className="text-xl text-center font-medium text-gray-900">
-                  €{currentMonth.actualExpenses.toFixed(2)}
+                  €{currentMonthExpenses.toFixed(2)}
                 </p>
               </div>
             </div>

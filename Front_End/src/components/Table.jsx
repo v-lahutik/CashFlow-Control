@@ -26,84 +26,62 @@ function Table({ display }) {
     type: "",
     category: "",
     amount: "",
-    id: ""
+    id: "",
   });
 
- 
   // When clicking on edit, populate form with transaction data
-const editHandler = (transaction) => {
-  console.log("Editing transaction:", transaction);
-  console.log("displayed transactions id", transaction._id);
-  setEditMode(transaction._id); // Activates edit mode for this transaction
-  setEditFormData({
-    date: transaction.date,
-    type: transaction.type,
-    category: transaction.category,
-    amount: transaction.amount,
-    id: transaction._id, // Adding the ID for saving the correct transaction
-  });
-};
-
-
-
-// Handles saving the edited transaction
-
-const saveEditHandler = (id) => {
-  console.log("Saving edited transaction:", editFormData);
-
-  // Convert amount to a number if it's a string
-  const parsedAmount = parseFloat(editFormData.amount);
-  if (isNaN(parsedAmount)) {
-    console.error("Invalid amount value:", editFormData.amount);
-    return; // Stop execution if the amount is not a valid number
-  }
-
-  // Update the form data with the correct number type for amount
-  const updatedTransaction = {
-    ...editFormData,
-    amount: parsedAmount,
-    date: new Date(editFormData.date).toISOString(),
+  const editHandler = (transaction) => {
+    console.log("Editing transaction:", transaction);
+    console.log("displayed transactions id", transaction.transactionId);
+    setEditMode(transaction.transactionId); // Activates edit mode for this transaction
+    setEditFormData({
+      date: transaction.date,
+      type: transaction.type,
+      category: transaction.category,
+      amount: transaction.amount,
+      id: transaction.transactionId, //id from reducer
+    });
   };
 
-  dispatch({
-    type: "EDIT_TRANSACTION",
-    payload: { id, transaction: updatedTransaction },
-  });
+  // Handles saving the edited transaction
 
-  setEditMode(null);
-  //editTransaction(updatedTransaction); // Ensure the date is in ISO format
-  setEditFormData({});
-};
+  const saveEditHandler = (id) => {
+    console.log("Saving edited transaction:", editFormData);
+
+    // Convert amount to a number if it's a string
+    const parsedAmount = parseFloat(editFormData.amount);
+    if (isNaN(parsedAmount)) {
+      console.error("Invalid amount value:", editFormData.amount);
+      return; // Stop execution if the amount is not a valid number
+    }
+
+    // Update the form data with the correct number type for amount
+    const updatedTransaction = {
+      ...editFormData,
+      amount: parsedAmount,
+      date: new Date(editFormData.date).toISOString(),
+    };
+
+    dispatch({
+      type: "EDIT_TRANSACTION",
+      payload: { id, transaction: updatedTransaction },
+    });
+
+    setEditMode(null);
+    //editTransaction(updatedTransaction); // Ensure the date is in ISO format
+    setEditFormData({});
+  };
+
+  // Handles both the frontend and backend delete process
+  const deleteHandler = (transactionId) => {
+    // Dispatch to update state first
+    dispatch({
+      type: "DELETE_TRANSACTION",
+      payload: transactionId,
+    });
 
 
-// Handles sending the delete request to the backend
-// const deleteTransaction = async (transactionId) => {
-//   try {
-//     const userId = user._id;
-//     const response = await fetch(`http://localhost:4000/budget/${userId}/transaction/${transactionId}`, {
-//       method: "DELETE",
-//       credentials: "include", // For handling cookies
-//     });
-
-//     const data = await response.json();
-//     console.log("Transaction deleted on backend:", data);
-//   } catch (error) {
-//     console.error("Error deleting transaction:", error);
-//   }
-// };
-
-// Handles both the frontend and backend delete process
-const deleteHandler = (transactionId) => {
-  // Dispatch to update state first
-  dispatch({
-    type: "DELETE_TRANSACTION",
-    payload: transactionId,
-  });
-
-  // Send delete request to backend
-  deleteTransaction(transactionId);
-};
-
+  };
 
   useEffect(() => {
     let filteredTransactions = state.transactions;
@@ -169,7 +147,7 @@ const deleteHandler = (transactionId) => {
                 </span>
               </button>
             </span>
-  
+
             {currentTransactions.length === 0 ? (
               <div className="text-center p-4 text-gray-400">
                 <p>No transactions available.</p>
@@ -179,17 +157,43 @@ const deleteHandler = (transactionId) => {
               <table className="min-w-full bg-gray-800 border border-gray-700">
                 <thead className="bg-gradient-to-r from-green-500 to-blue-500">
                   <tr>
-                    <th className="text-left px-4 py-2 border-b text-white">Category</th>
-                    <th className="text-left px-4 py-2 border-b text-white">Amount</th>
-                    <th className="text-left px-4 py-2 border-b text-white">Edit</th>
+                    <th className="text-left px-4 py-2 border-b text-white">
+                      Date
+                    </th>
+                    <th className="text-left px-4 py-2 border-b text-white">
+                      Category
+                    </th>
+                    <th className="text-left px-4 py-2 border-b text-white">
+                      Amount
+                    </th>
+                    <th className="text-left px-4 py-2 border-b text-white">
+                      Edit
+                    </th>
                   </tr>
                 </thead>
-  
+
                 <tbody>
                   {currentTransactions.map((transaction) => (
-                    <tr key={transaction._id} className="border-b border-gray-700">
-                      {editMode === transaction._id ? (
+                    <tr
+                      key={transaction.transactionId}
+                      className="border-b border-gray-700"
+                    >
+                      {editMode === transaction.transactionId ? (
                         <>
+                         <td className="px-4 py-2">
+                            <input
+                              type="text"
+                              required
+                              value={formatDate(editFormData.date)}
+                              onChange={(e) =>
+                                setEditFormData({
+                                  ...editFormData,
+                                  date: e.target.value,
+                                })
+                              }
+                              className="max-w-28 border rounded px-2 py-1 bg-gray-700 text-white"
+                            />
+                          </td>
                           <td className="px-4 py-2">
                             <input
                               type="text"
@@ -213,12 +217,14 @@ const deleteHandler = (transactionId) => {
                                   amount: e.target.value,
                                 })
                               }
-                              className=" max-w-28 border rounded px-2 py-1 bg-gray-700 text-white"
+                              className=" max-w-16 border rounded px-2 py-1 bg-gray-700 text-white"
                             />
                           </td>
                           <td className="px-4 py-2 flex gap-2">
                             <button
-                              onClick={() => saveEditHandler(transaction._id)}
+                              onClick={() =>
+                                saveEditHandler(transaction.transactionId)
+                              }
                               className="text-green-400 hover:underline"
                             >
                               Save
@@ -233,22 +239,29 @@ const deleteHandler = (transactionId) => {
                         </>
                       ) : (
                         <>
+                        <td className="px-4 py-2 text-white">
+                            {formatDate(transaction.date)}
+                          </td>
                           <td className="px-4 py-2 flex items-center text-white">
                             {transaction.type === "income" && (
-                              <PiChartLineUp className="m-2 text-green-400" />
+                              <span className="ml-2 text-green-300">{transaction.category}</span>
                             )}
                             {transaction.type === "expenses" && (
-                              <PiChartLineDown className="m-2 text-red-400" />
+                              <span className="ml-2 text-red-400">{transaction.category}</span>
                             )}
-                            <span className="ml-2">{transaction.category}</span>
+                            
                           </td>
-                          <td className="px-4 py-2 text-white">{transaction.amount}</td>
+                          <td className="px-4 py-2 text-white">
+                            {transaction.amount}
+                          </td>
                           <td className="px-4 py-2 flex gap-2">
                             <button onClick={() => editHandler(transaction)}>
                               <BsPencil className="text-white" />
                             </button>
                             <button
-                              onClick={() => deleteHandler(transaction._id)}
+                              onClick={() =>
+                                deleteHandler(transaction.transactionId)
+                              }
                             >
                               <BsTrash className="text-white" />
                             </button>
@@ -260,7 +273,7 @@ const deleteHandler = (transactionId) => {
                 </tbody>
               </table>
             )}
-  
+
             {/* Pagination Controls */}
             <div className="flex justify-between items-center mt-4 text-white">
               <button
@@ -287,9 +300,11 @@ const deleteHandler = (transactionId) => {
         // full table
         <div className="my-8 mx-auto max-w-screen-lg p-4 bg-gray-900 shadow-lg rounded-lg">
           <div className="mx-auto max-w-lg text-center mt-4 m-10">
-            <h2 className="text-2xl font-bold sm:text-3xl text-white">Transaction List</h2>
+            <h2 className="text-2xl font-bold sm:text-3xl text-white">
+              Transaction List
+            </h2>
           </div>
-  
+
           <form className="mb-4">
             <div className="flex justify-between items-center gap-4">
               {/* Transaction Type Filter */}
@@ -304,7 +319,7 @@ const deleteHandler = (transactionId) => {
                   <option value="expenses">Expenses</option>
                 </select>
               </label>
-  
+
               {/* Month Filter */}
               <label className="block w-full md:w-1/3">
                 <select
@@ -330,7 +345,7 @@ const deleteHandler = (transactionId) => {
                   <option value="12">December</option>
                 </select>
               </label>
-  
+
               {/* Amount Sorting */}
               <label className="block w-full md:w-1/3">
                 <select
@@ -347,7 +362,7 @@ const deleteHandler = (transactionId) => {
               </label>
             </div>
           </form>
-  
+
           <div className="overflow-x-auto">
             {currentTransactions.length === 0 ? (
               <div className="text-center p-4 text-gray-400">
@@ -358,17 +373,30 @@ const deleteHandler = (transactionId) => {
               <table className="min-w-full bg-gray-800 border border-gray-700">
                 <thead className="bg-gradient-to-r from-green-500 to-blue-500">
                   <tr>
-                    <th className="text-left px-4 py-2 border-b text-white">Date</th>
-                    <th className="text-left px-4 py-2 border-b text-white">Type</th>
-                    <th className="text-left px-4 py-2 border-b text-white">Category</th>
-                    <th className="text-left px-4 py-2 border-b text-white">Amount</th>
-                    <th className="text-left px-4 py-2 border-b text-white">Actions</th>
+                    <th className="text-left px-4 py-2 border-b text-white">
+                      Date
+                    </th>
+                    <th className="text-left px-6 py-2 border-b text-white">
+                      Type
+                    </th>
+                    <th className="text-left px-4 py-2 border-b text-white">
+                      Category
+                    </th>
+                    <th className="text-left px-4 py-2 border-b text-white">
+                      Amount
+                    </th>
+                    <th className="text-left px-4 py-2 border-b text-white">
+                      Actions
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
                   {currentTransactions.map((transaction) => (
-                    <tr key={transaction._id} className="border-b border-gray-700">
-                      {editMode === transaction._id ? (
+                    <tr
+                      key={transaction.transactionId}
+                      className="border-b border-gray-700"
+                    >
+                      {editMode === transaction.transactionId ? (
                         <>
                           <td className="px-4 py-2">
                             <input
@@ -393,7 +421,7 @@ const deleteHandler = (transactionId) => {
                                   type: e.target.value,
                                 })
                               }
-                              className="border rounded px-2 py-1 bg-gray-700 text-white"
+                              className="max-w-32 border rounded px-2 py-1 bg-gray-700 text-white"
                             >
                               <option value="income">Income</option>
                               <option value="expenses">Expenses</option>
@@ -409,7 +437,7 @@ const deleteHandler = (transactionId) => {
                                   category: e.target.value,
                                 })
                               }
-                              className="border rounded px-2 py-1 bg-gray-700 text-white"
+                              className="max-w-32 border rounded px-2 py-1 bg-gray-700 text-white"
                             />
                           </td>
                           <td className="px-4 py-2">
@@ -422,12 +450,14 @@ const deleteHandler = (transactionId) => {
                                   amount: e.target.value,
                                 })
                               }
-                              className="border rounded px-2 py-1 bg-gray-700 text-white"
+                              className="max-w-32 border rounded px-2 py-1 bg-gray-700 text-white"
                             />
                           </td>
                           <td className="px-4 py-2 flex gap-2">
                             <button
-                              onClick={() => saveEditHandler(transaction._id)}
+                              onClick={() =>
+                                saveEditHandler(transaction.transactionId)
+                              }
                               className="text-green-400 hover:underline"
                             >
                               Save
@@ -454,14 +484,20 @@ const deleteHandler = (transactionId) => {
                             )}
                             <span className="ml-2">{transaction.type}</span>
                           </td>
-                          <td className="px-4 py-2 text-white">{transaction.category}</td>
-                          <td className="px-4 py-2 text-white">{transaction.amount}</td>
+                          <td className="px-4 py-2 text-white">
+                            {transaction.category}
+                          </td>
+                          <td className="px-4 py-2 text-white">
+                            {transaction.amount}
+                          </td>
                           <td className="px-4 py-2 flex gap-2">
                             <button onClick={() => editHandler(transaction)}>
                               <BsPencil className="text-white" />
                             </button>
                             <button
-                              onClick={() => deleteHandler(transaction._id)}
+                              onClick={() =>
+                                deleteHandler(transaction.transactionId)
+                              }
                             >
                               <BsTrash className="text-white" />
                             </button>
@@ -474,7 +510,7 @@ const deleteHandler = (transactionId) => {
               </table>
             )}
           </div>
-  
+
           {/* Pagination Controls */}
           <div className="flex justify-between items-center mt-4 text-white">
             <button
@@ -499,7 +535,6 @@ const deleteHandler = (transactionId) => {
       )}
     </>
   );
-  
 }
 
 export default Table;

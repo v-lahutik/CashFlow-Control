@@ -43,8 +43,7 @@ function TransactionForm() {
 
   useEffect(() => {
     const updateBackend = async () => {
-      if (state.transactions.length === 0) return;
-      console.log("initial transactions", state.transactions);
+     
   
       try {
         const userId = user._id;
@@ -77,7 +76,7 @@ function TransactionForm() {
     };
   
     updateBackend();
-  }, [ state.monthlyTracking]);
+  }, [state.transactions, state.monthlyTracking]);
   
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -238,6 +237,9 @@ function TransactionForm() {
               <div className="relative">
                 <input
                   type="date"
+                  placeholder="dd/mm/yyyy" 
+                  min="1997-01-01"
+                  max="2030-12-31"
                   value={formatDate(date)}
                   onChange={handleDateChange}
                   className="w-full rounded-lg border border-gray-600 bg-gray-800 p-4 text-sm text-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
