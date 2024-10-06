@@ -44,7 +44,6 @@ function Table({ display }) {
   };
 
   // Handles saving the edited transaction
-
   const saveEditHandler = (id) => {
     console.log("Saving edited transaction:", editFormData);
 
@@ -68,7 +67,6 @@ function Table({ display }) {
     });
 
     setEditMode(null);
-    //editTransaction(updatedTransaction); // Ensure the date is in ISO format
     setEditFormData({});
   };
 

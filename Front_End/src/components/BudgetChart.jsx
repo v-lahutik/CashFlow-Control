@@ -4,10 +4,10 @@ import { BudgetContext } from '../context/Context.jsx';
 import ExpenseCategoryChart from './ExpensesChart.jsx';
 import IncomeChart from './IncomeChart.jsx';
 
-Chart.register(...registerables); // Register Chart.js components
+Chart.register(...registerables); 
 
 const BudgetChart = () => {
-  const { state } = useContext(BudgetContext); // Get the budget context
+  const { state } = useContext(BudgetContext); 
 
   useEffect(() => {
     const ctx = document.getElementById('budgetChart').getContext('2d');

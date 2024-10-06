@@ -4,13 +4,60 @@ import axios from 'axios'
 import { BudgetContext } from '../context/Context.jsx'
 
 function Register() {
-  const {dispatch}=useContext(BudgetContext);
+  
   const [user, setUser] = useState({ firstName: "",lastName: "", email: "", password: "" });
   const [errors, setErrors] = useState({}); 
   const [message, setMessage] = useState("");
 
   const submitHandler = async (e) => {
     e.preventDefault();
+
+    const validationErrors = {};
+
+    // Validate firstName
+    if (!user.firstName) {
+      validationErrors.firstName = "First name is required";
+    } else if (!/^[a-zA-Z]+$/.test(user.firstName)) {
+      validationErrors.firstName = "First name must contain only letters";
+    } else if (user.firstName.length < 3 || user.firstName.length > 50) {
+      validationErrors.firstName = "First name must be between 3 and 50 characters";
+    }
+  
+    // Validate lastName
+    if (!user.lastName) {
+      validationErrors.lastName = "Last name is required";
+    } else if (!/^[a-zA-Z]+$/.test(user.lastName)) {
+      validationErrors.lastName = "Last name must contain only letters";
+    } else if (user.lastName.length < 3 || user.lastName.length > 100) {
+      validationErrors.lastName = "Last name must be between 3 and 100 characters";
+    }
+  
+    // Validate email
+    if (!user.email) {
+      validationErrors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(user.email)) {
+      validationErrors.email = "Please enter a valid email address";
+    }
+  
+    // Validate password
+    if (!user.password) {
+      validationErrors.password = "Password is required";
+    } else if (user.password.length < 5) {
+      validationErrors.password = "Password must be at least 5 characters long";
+    } else if (!/\d/.test(user.password)) {
+      validationErrors.password = "Password must contain at least one number";
+    } else if (!/[A-Z]/.test(user.password)) {
+      validationErrors.password = "Password must contain at least one uppercase letter";
+    } else if (!/[!@#$%^&*(),.?":{}|<>]/.test(user.password)) {
+      validationErrors.password = "Password must contain at least one special character";
+    }
+  
+    // If there are validation errors, update the errors state and return early
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
     try {
       const res = await axios({
         url: "http://localhost:4000/users/register",
@@ -18,42 +65,25 @@ function Register() {
         data: user,
         headers: {
           "Content-Type": "application/json",
-        },
+        }
       });
-  
-      // After successful registration, set user and budget state
-      const { user: newUser, budget } = res.data;
-  
-      // Set user and budget data in your state or context
-      dispatch({ type: "SET_USER", payload: newUser });
-      dispatch({ type: "SET_BUDGET_DATA", payload: budget });
-  
-      // Reset the form
-      setUser({ firstName: "", lastName: "", email: "", password: "" });
       setMessage(res.data.message);
       setErrors({});
+      setUser({ firstName: "", lastName: "", email: "", password: "" });
     } catch (error) {
-      console.error("Error during registration:", error);
-  
       if (error.response) {
-        // Check if error response data is valid
-        const errorMessages = error.response.data.errors || [];
-        setErrors({ ...errors, res: errorMessages });
-        
-        // Ensure there is at least one error message to access
-        if (errorMessages.length > 0) {
-          setMessage(errorMessages[0].msg); // Safely access the first error message
-        } else {
-          setMessage("An unexpected error occurred");
-        }
+        console.error("Backend error:", error.response.data)
+        console.error("FIRST ERROR:", error.response.data.errors[0].msg)
+        console.log("Errors state:", errors);
+        setErrors({ ...errors, res: error.response.data.errors });
+        setMessage(error.response.data.errors[0].msg);
       } else {
+        console.error("Unexpected error:", error.message); 
         setErrors({ ...errors, res: "An unexpected error occurred" });
-        setMessage("Network error or unexpected response");
+        setMessage(error.response.data.errors[0].msg);
       }
     }
   };
-  
-
   const changeHandler = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value }); 
   };
@@ -86,6 +116,7 @@ function Register() {
                   onChange={changeHandler}
                   value={user.firstName}
                 />
+                {errors.firstName && <p className="text-red-500 text-xs">{errors.firstName}</p>} 
               </div>
             </div>
             <div>
@@ -105,6 +136,7 @@ function Register() {
                   onChange={changeHandler}
                   value={user.lastName}
                 />
+                 {errors.lastName && <p className="text-red-500 text-xs">{errors.lastName}</p>} 
               </div>
             </div>
             <div>
@@ -122,6 +154,7 @@ function Register() {
                   onChange={changeHandler}
                   value={user.email}
                 />
+                {errors.email&& <p className="text-red-500 text-xs">{errors.email}</p>} 
               </div>
             </div>
 
@@ -142,6 +175,7 @@ function Register() {
                   onChange={changeHandler}
                   value={user.password}
                 />
+                {errors.password&& <p className="text-red-500 text-xs">{errors.password}</p>} 
               </div>
             </div>
 

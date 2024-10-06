@@ -2,10 +2,10 @@ import React, { useEffect, useContext } from 'react';
 import { Chart, registerables } from 'chart.js';
 import { BudgetContext } from '../context/Context.jsx';
 
-Chart.register(...registerables); // Register Chart.js components
+Chart.register(...registerables); 
 
 const IncomeChart = () => {
-  const { state } = useContext(BudgetContext); // Get the budget context
+  const { state } = useContext(BudgetContext); 
 
   useEffect(() => {
     const ctx = document.getElementById('incomeCategoryChart').getContext('2d');
@@ -18,7 +18,7 @@ const IncomeChart = () => {
       if (transaction.type === "income") {
         const month = transaction.month;
         const category = transaction.category;
-        const amount = parseFloat(transaction.amount); // Convert amount to number
+        const amount = parseFloat(transaction.amount); 
 
         // Initialize the structure if not already present
         if (!categoryData[month]) {
@@ -41,7 +41,7 @@ const IncomeChart = () => {
       "July", "August", "September", "October", "November", "December"
     ];
 
-    const labels = months; // Use static month labels
+    const labels = months; 
     const categories = [...new Set(state.transactions
       .filter(t => t.type === "income") // Only include income transactions
       .map(t => t.category))]; // Unique categories
@@ -51,13 +51,13 @@ const IncomeChart = () => {
       datasets: categories.map(category => ({
         label: category.charAt(0).toUpperCase() + category.slice(1), // Capitalize category names
         backgroundColor: `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, 0.5)`, // Random color for each category
-        borderColor: 'rgba(255, 255, 255, 1)', // White border for better contrast
-        data: months.map(month => Math.abs(categoryData[month]?.[category] || 0)), // Get data for each category, using absolute values
+        borderColor: 'rgba(255, 255, 255, 1)', 
+        data: months.map(month => Math.abs(categoryData[month]?.[category] || 0)), 
       })),
     };
 
     const config = {
-      type: 'bar', // Use 'bar' for grouped bar chart
+      type: 'bar', 
       data: data,
       options: {
         responsive: true,
@@ -69,7 +69,7 @@ const IncomeChart = () => {
             font: {
               size: 24,
               weight: 'bold',
-              color: 'white', // White title color (if displayed)
+              color: 'white', 
             },
           },
         },
@@ -82,10 +82,10 @@ const IncomeChart = () => {
             },
             ticks: {
               autoSkip: false, // Ensure all months are displayed
-              color: 'white', // Set x-axis ticks color to white
+              color: 'white', 
             },
             grid: {
-              color: 'rgba(255, 255, 255, 0.1)', // Light grid lines for x-axis
+              color: 'rgba(255, 255, 255, 0.1)', 
             },
           },
           y: {
@@ -93,15 +93,15 @@ const IncomeChart = () => {
             title: {
               display: true,
               text: 'Amount (€)',
-              color: 'white', // Set y-axis title color to white
+              color: 'white', 
             },
             ticks: {
-              color: 'white', // Set y-axis ticks color to white
+              color: 'white', 
             },
             beginAtZero: true,
-            min: 0, // Set the minimum value to 0
+            min: 0, 
             grid: {
-              color: 'rgba(255, 255, 255, 0.1)', // Light grid lines for y-axis
+              color: 'rgba(255, 255, 255, 0.1)', 
             },
           },
         },

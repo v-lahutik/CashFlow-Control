@@ -14,7 +14,7 @@ const budgetSchema = new mongoose.Schema({
   ],
   transactions: [
     {
-      transactionId: { type: String, required: true, unique: true }, //from uuid
+      transactionId: { type: String}, //from uuid
       type: { type: String, required: true }, // e.g. "income" or "expenses"
       category: { type: String, required: true },
       amount: { type: Number, required: true },
