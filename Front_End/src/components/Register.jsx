@@ -116,7 +116,7 @@ function Register() {
                   onChange={changeHandler}
                   value={user.firstName}
                 />
-                {errors.firstName && <p className="text-red-500 text-xs">{errors.firstName}</p>} 
+                {errors.firstName && <p className="py-2 text-red-500 text-xs">{errors.firstName}</p>} 
               </div>
             </div>
             <div>
@@ -136,7 +136,7 @@ function Register() {
                   onChange={changeHandler}
                   value={user.lastName}
                 />
-                 {errors.lastName && <p className="text-red-500 text-xs">{errors.lastName}</p>} 
+                 {errors.lastName && <p className="py-2 text-red-500 text-xs">{errors.lastName}</p>} 
               </div>
             </div>
             <div>
@@ -154,7 +154,7 @@ function Register() {
                   onChange={changeHandler}
                   value={user.email}
                 />
-                {errors.email&& <p className="text-red-500 text-xs">{errors.email}</p>} 
+                {errors.email&& <p className="py-2 text-red-500 text-xs">{errors.email}</p>} 
               </div>
             </div>
 
@@ -175,7 +175,7 @@ function Register() {
                   onChange={changeHandler}
                   value={user.password}
                 />
-                {errors.password&& <p className="text-red-500 text-xs">{errors.password}</p>} 
+                {errors.password&& <p className="py-2 text-red-500 text-xs">{errors.password}</p>} 
               </div>
             </div>
 
