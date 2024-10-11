@@ -31,8 +31,6 @@ function Table({ display }) {
 
   // When clicking on edit, populate form with transaction data
   const editHandler = (transaction) => {
-    console.log("Editing transaction:", transaction);
-    console.log("displayed transactions id", transaction.transactionId);
     setEditMode(transaction.transactionId); // Activates edit mode for this transaction
     setEditFormData({
       date: transaction.date,
@@ -45,7 +43,6 @@ function Table({ display }) {
 
   // Handles saving the edited transaction
   const saveEditHandler = (id) => {
-    console.log("Saving edited transaction:", editFormData);
 
     // Convert amount to a number if it's a string
     const parsedAmount = parseFloat(editFormData.amount);

@@ -24,13 +24,13 @@ export const updateBudgetData= async (req, res, next) => {
  
   try {
     const { budgetGoal, monthlyTracking, transactions } = req.body;
-    console.log('Request body from updateBudgetData:', req.body); 
+   
     const updatedBudget = await Budget.findOneAndUpdate(
       { user: req.params.userId }, 
       { budgetGoal, monthlyTracking, transactions },
       { new: true } 
     )
-    console.log("Updated budget data in DB:", updatedBudget);
+    
     if (!updatedBudget) {
       return res
         .status(404)
@@ -53,8 +53,6 @@ export const editBudgetData = async (req, res, next) => {
     const { transactionId } = req.params;
     const updatedTransaction = req.body;
 
-    console.log('Request body fom  editBudgetData:', req.body);
-  console.log('User ID from table:', req.params.userId);
 
     const updatedBudget = await Budget.findOneAndUpdate(
       { "user": req.params.userId, "transactions._id": transactionId },

@@ -60,8 +60,6 @@ function TransactionForm() {
           transactions: formattedTransactions,
         };
   
-        // Log the formatted budgetData
-        console.log("Budget data being sent:", budgetData);
   
         const response = await axios.put(
           `http://localhost:4000/budget/${userId}`,
@@ -69,7 +67,7 @@ function TransactionForm() {
           { withCredentials: true }
         );
         
-        console.log("Updated budget data:", response.data);
+
       } catch (error) {
         console.error("Error updating budget data:", error);
       }
@@ -102,7 +100,7 @@ function TransactionForm() {
       type: "ADD_TRANSACTION",
       payload: newTransaction,
     });
-    console.log("New transaction:", newTransaction);
+  
 
     // Clear form inputs
     setTransactionType("");

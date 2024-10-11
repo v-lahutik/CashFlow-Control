@@ -18,7 +18,6 @@ export const AuthProvider = ({ children }) => {
         });
         if (response.data.user) {
           setUser(response.data.user); // Set the user if found
-          //console.log("User session found", response.data.user);
         } else {
           setUser(null); // No user found
         }
@@ -36,7 +35,6 @@ export const AuthProvider = ({ children }) => {
   const login = (userData) => {
     setUser(userData);
     navigate("/");
-    console.log("User logged in", userData);
     window.location.reload();
   };
 

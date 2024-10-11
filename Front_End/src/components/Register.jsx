@@ -74,7 +74,7 @@ function Register() {
       if (error.response) {
         console.error("Backend error:", error.response.data)
         console.error("FIRST ERROR:", error.response.data.errors[0].msg)
-        console.log("Errors state:", errors);
+       
         setErrors({ ...errors, res: error.response.data.errors });
         setMessage(error.response.data.errors[0].msg);
       } else {

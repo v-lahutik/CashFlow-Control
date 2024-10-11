@@ -51,7 +51,7 @@ function budgetReducer(state, action) {
            
      
         };
-    console.log("newTransaction context ", newTransaction)
+    
         const updatedTracking = state.monthlyTracking.map((month) => {
             if (month.month === action.payload.month) {
                 const newActualIncome =
@@ -98,18 +98,14 @@ function budgetReducer(state, action) {
           let newActualIncome = month.actualIncome;
           let newActualExpenses = month.actualExpenses;
     
-          console.log("Deleting transaction:", transactionToDelete);
-          console.log("Current actualExpenses before deletion:", month.actualExpenses);
-    
           // Reverse the effects of the deleted transaction
           if (transactionToDelete.type === "income") {
             newActualIncome -= parseFloat(transactionToDelete.amount); // Assuming amount is positive for income
           } else if (transactionToDelete.type === "expenses") {
-            console.log("transactionToDelete.amount", transactionToDelete.amount);
+           
             newActualExpenses += Math.abs(parseFloat(transactionToDelete.amount)); // Amount should be treated as positive
           }
     
-          console.log("Updated actualExpenses after deletion:", newActualExpenses);
     
           // Recalculate whether the goal was met after the deletion
           const goalMet = newActualIncome + newActualExpenses >= month.goal;
@@ -134,7 +130,6 @@ function budgetReducer(state, action) {
     
 
   case "EDIT_TRANSACTION": {
-    console.log("edit transaction context", action.payload)
     const transactionToEdit = state.transactions.find(
         (transaction) => transaction.transactionId  === action.payload.id
     );
@@ -162,7 +157,7 @@ function budgetReducer(state, action) {
             if (transactionToEdit.type === "income") {
                 newActualIncome -= parseFloat(transactionToEdit.amount);
                 newActualIncome += parseFloat(action.payload.transaction.amount);
-                console.log("amount",action.payload.transaction.amount)
+              
 
             } else if (transactionToEdit.type === "expenses") {
                 newActualExpenses += Math.abs(parseFloat(transactionToEdit.amount));
