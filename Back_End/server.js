@@ -54,5 +54,5 @@ app.listen(port, '0.0.0.0', () => {
 });
 
 // Increase timeout settings
-//server.keepAliveTimeout = 120000; // 120 seconds
-//server.headersTimeout = 120000; // 120 seconds
+app.keepAliveTimeout = 120000; // 120 seconds
+app.headersTimeout = 120000; // 120 seconds
