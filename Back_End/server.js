@@ -49,4 +49,10 @@ app.use((err, req, res, next) => {
 
 //server
 const port = process.env.PORT || 4000;
-app.listen(port, console.log(`server is up on port: ${port} 🚀`));
+app.listen(port, '0.0.0.0', () => {
+  console.log(`Server is up on port: ${port} 🚀`);
+});
+
+// Increase timeout settings
+server.keepAliveTimeout = 120000; // 120 seconds
+server.headersTimeout = 120000; // 120 seconds
