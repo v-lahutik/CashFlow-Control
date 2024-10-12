@@ -1,5 +1,9 @@
 {
   "type": "module",
+  "scripts": {
+    "build": "npm install",
+    "start": "node server.js"
+  },
   "dependencies": {
     "bcrypt": "^5.1.1",
     "cookie-parser": "^1.4.6",
