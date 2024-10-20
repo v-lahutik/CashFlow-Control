@@ -1,7 +1,7 @@
 {
   "type": "module",
   "scripts": {
-    "build": "echo 'No build step required'",
+    "build": "npm install",
     "start": "node server.js"
   },
   "dependencies": {

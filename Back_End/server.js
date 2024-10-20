@@ -20,8 +20,8 @@ connectToDB();
 app.use(cookieParser())
 
 app.use(cors({
+  origin: 'https://cashflow-control-xxx4.onrender.com',
   credentials: true,
-  origin: 'http://localhost:3000', 
 }));
 
 
@@ -40,7 +40,6 @@ app.use((req, res, next) => {
   });
   
 app.use((err, req, res, next) => {
-
     if (err) {
       res.status(err.status || 500).json({ msg: err.message });
     }
@@ -53,6 +52,3 @@ app.listen(port, '0.0.0.0', () => {
   console.log(`Server is up on port: ${port} 🚀`);
 });
 
-// Increase timeout settings
-app.keepAliveTimeout = 120000; // 120 seconds
-app.headersTimeout = 120000; // 120 seconds
