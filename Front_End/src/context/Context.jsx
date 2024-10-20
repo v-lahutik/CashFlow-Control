@@ -198,7 +198,7 @@ const BudgetProvider = ({ children }) => {
       if (!user || !user._id) return; // Wait until the complete user data is available
      
       try {
-        const response = await axios.get(`http://localhost:4000/budget/${user._id}`, {
+        const response = await axios.get(`https://cashflow-control-backend.onrender.com/budget/${user._id}`, {
           withCredentials: true,
           
         });

@@ -60,7 +60,7 @@ function Register() {
 
     try {
       const res = await axios({
-        url: "http://localhost:4000/users/register",
+        url: "https://cashflow-control-backend.onrender.com/users/register",
         method: "POST",
         data: user,
         headers: {

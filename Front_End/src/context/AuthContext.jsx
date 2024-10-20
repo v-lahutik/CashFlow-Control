@@ -13,7 +13,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const checkUserSession = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/users/me", {
+        const response = await axios.get("https://cashflow-control-backend.onrender.com/users/me", {
           withCredentials: true, // This sends the cookies with the request
         });
         if (response.data.user) {
@@ -41,7 +41,7 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       await axios.post(
-        "http://localhost:4000/users/logout",
+        "https://cashflow-control-backend.onrender.com/users/logout",
         {},
         { withCredentials: true }
       );
