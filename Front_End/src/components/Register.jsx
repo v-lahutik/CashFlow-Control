@@ -65,7 +65,8 @@ function Register() {
         data: user,
         headers: {
           "Content-Type": "application/json",
-        }
+        },
+        withCredentials: true,
       });
       setMessage(res.data.message);
       setErrors({});

@@ -27,9 +27,10 @@ app.use(cors({
 }));
 
 app.use(morgan('dev'));
-
 app.use(express.json())
 app.use(express.urlencoded({ extended: true}));
+app.options('*', cors()); // Allow preflight requests for all routes
+
 
 //routers
 app.use('/users', userRouter);
