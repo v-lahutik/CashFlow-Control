@@ -20,10 +20,11 @@ connectToDB();
 app.use(cookieParser())
 
 app.use(cors({
-  origin: 'https://cashflow-control-xxx4.onrender.com',
-  credentials: true,
+  origin: 'https://cashflow-control-xxx4.onrender.com', 
+  credentials: true, 
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], 
+  allowedHeaders: ['Content-Type', 'Authorization'], 
 }));
-
 
 app.use(morgan('dev'));
 
