@@ -7,7 +7,7 @@ export default defineConfig({
     port: 3000, // Frontend remains on port 3000
     proxy: {
       '/api': {
-        target: 'http://localhost:4000', // Backend is running on port 4000
+        target: 'https://cashflow-control-backend.onrender.com', // Backend is running on render
         changeOrigin: true,
       },
     },
