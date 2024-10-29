@@ -112,6 +112,8 @@ export const login = async (req, res, next) => {
     res.cookie("token", token, {
       httpOnly: true,
       expires: new Date(Date.now() + 3_600_000 * 24), // 1 day
+      secure: true,
+      sameSite: "None"
       
     })
       .json({ status: "You logged in successfully", user: { id: user._id, email: user.email } });
