@@ -1,6 +1,10 @@
 # 💰 CashFlow Control
 
-CashFlow Control is a web application designed for personal budget planning and tracking. It allows users to track income, expenses, set budget goals, and receive random savings tips. **Please note that backend features, including user authentication and database storage, are still in progress.**
+CashFlow Control is a web application designed for personal budget planning and tracking. It allows users to track income, expenses, set budget goals, and securely manage data through authentication and database storage.
+
+## Live Demo 🌐
+
+Check out the live version of [here...](https://cashflow-control-xxx4.onrender.com/)
 
 ## 🌟 Features
 
@@ -11,12 +15,14 @@ CashFlow Control is a web application designed for personal budget planning and 
 - **🔍 Filtering**: Transactions can be filtered by income or expense.
 - **💾 Database Storage**: User data is securely saved in a database instead of local storage.
 - **📈 Summary Charts**: Provides visual summary charts of income and/or expenses.
-- **💡 Random Savings Tips**: Displays a new savings tip each time the page is refreshed.
+-.
 
 ## 🛠️ Technologies Used
 
 - **Frontend**: JavaScript, React, Tailwind
 - **Backend**: Node.js, Express, Mongoose, bcrypt
 - **Database**: MongoDB
+- **Deployment**: Render 
+
 
 
