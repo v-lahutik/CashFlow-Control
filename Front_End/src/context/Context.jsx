@@ -3,6 +3,7 @@ import { useAuth } from "./AuthContext.jsx";
 import axios from "axios";
 import { v4 as uuidv4 } from 'uuid'; // Install uuid library
 
+
 const BudgetContext = createContext();
 
 
@@ -188,17 +189,17 @@ function budgetReducer(state, action) {
 }
 
 const BudgetProvider = ({ children }) => {
+  const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
   const { user } = useAuth(); 
   const [state, dispatch] = useReducer(budgetReducer, initialState);
   const [displayedTransaction, setDisplayedTransaction] = useState(state.transactions);
-  
   
   useEffect(() => {
     const fetchBudgetData = async () => {
       if (!user || !user._id) return; // Wait until the complete user data is available
      
       try {
-        const response = await axios.get(`https://cashflow-control-backend.onrender.com/budget/${user._id}`, {
+        const response = await axios.get(`${API_BASE_URL}/${user._id}`, {
           withCredentials: true,
           
         });

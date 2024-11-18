@@ -4,7 +4,7 @@ import axios from 'axios'
 import { BudgetContext } from '../context/Context.jsx'
 
 function Register() {
-  
+  const API_BASE_URL = process.env.REACT_APP_BACKEND_URL
   const [user, setUser] = useState({ firstName: "",lastName: "", email: "", password: "" });
   const [errors, setErrors] = useState({}); 
   const [message, setMessage] = useState("");
@@ -60,7 +60,7 @@ function Register() {
 
     try {
       const res = await axios({
-        url: "https://cashflow-control-backend.onrender.com/users/register",
+        url: `${API_BASE_URL}/users/register`,
         method: "POST",
         data: user,
         headers: {

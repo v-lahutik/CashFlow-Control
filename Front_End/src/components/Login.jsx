@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 
 function Login() {
+  const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
   const { login } = useAuth();
   const [user, setUser] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
@@ -13,7 +14,7 @@ function Login() {
     e.preventDefault();
     try {
       const res = await axios({
-        url: "https://cashflow-control-backend.onrender.com/users/login",
+        url: `${API_BASE_URL}/users/login`,
         method: "POST",
         data: user,
         headers: {

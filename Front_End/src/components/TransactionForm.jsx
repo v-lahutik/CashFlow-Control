@@ -5,6 +5,7 @@ import { useAuth } from "../context/AuthContext.jsx";
 import { formatDate } from "../utils/formatDate.js";
 
 function TransactionForm() {
+  const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
   const {user}=useAuth();
   const { dispatch, state } = useContext(BudgetContext);
   const [transactionType, setTransactionType] = useState("");
@@ -62,7 +63,7 @@ function TransactionForm() {
   
   
         const response = await axios.put(
-          `https://cashflow-control-backend.onrender.com/budget/${userId}`,
+          `${API_BASE_URL}/budget/${userId}`,
           budgetData,
           { withCredentials: true }
         );

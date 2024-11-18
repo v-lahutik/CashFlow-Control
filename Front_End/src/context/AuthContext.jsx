@@ -6,6 +6,7 @@ import axios from "axios";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
+  const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true); // Add loading state to manage data fetch timing
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const checkUserSession = async () => {
       try {
-        const response = await axios.get("https://cashflow-control-backend.onrender.com/users/me", {
+        const response = await axios.get(`${API_BASE_URL}/users/me`, {
           withCredentials: true, // This sends the cookies with the request
         });
         if (response.data.user) {
@@ -39,9 +40,11 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = async () => {
+    const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
+    
     try {
       await axios.post(
-        "https://cashflow-control-backend.onrender.com/users/logout",
+        `${API_BASE_URL}/users/logout`,
         {},
         { withCredentials: true }
       );
