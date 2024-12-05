@@ -31,15 +31,15 @@ For the back- and frontend there is a Dockerfile for building respective images.
 Build the two images (in the respective folders):
 
 ```bash
-docker image build cashcontrol_frontend:latest .
+docker image build cashflow_frontend:latest .
 
-docker image build cashcontrol_backend:latest .
+docker image build cashflow_backend:latest .
 ```
 
 In order to use it, it is required to first create the needed Docker network:
 
 ```bash
-docker network create cashcontrol
+docker network create cashflow
 ```
 
 Now, the application with all its dependencies can be launched with:
