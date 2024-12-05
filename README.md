@@ -24,5 +24,28 @@ Check out the live version of [here...](https://cashflow-control-xxx4.onrender.c
 - **Database**: MongoDB
 - **Deployment**: Render 
 
+## Include Docker
 
+For the back- and frontend there is a Dockerfile for building respective images. To ease deployment in development, there is also a docker compose file located at the project's root directory.
 
+Build the two images (in the respective folders):
+
+```bash
+docker image build cashcontrol_frontend:latest .
+
+docker image build cashcontrol_backend:latest .
+```
+
+In order to use it, it is required to first create the needed Docker network:
+
+```bash
+docker network create cashcontrol
+```
+
+Now, the application with all its dependencies can be launched with:
+
+```bash
+docker compose up
+```
+
+Note: this is a preliminary attempt for utilizing Docker.
