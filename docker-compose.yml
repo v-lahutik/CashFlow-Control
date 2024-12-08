@@ -1,0 +1,28 @@
+services:
+  db:
+    image: mongo:latest
+    container_name: mongodb
+    networks:
+      - cashflow
+
+  backend:
+    image: cashflow_backend:latest
+    depends_on:
+      - db
+    networks:
+      - cashflow
+    environment:
+      DB_URI: mongodb://db:27017
+
+  frontend:
+    image: cashflow_frontend:latest
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - cashflow
+
+networks:
+  cashflow:
+    external: true
