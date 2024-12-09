@@ -31,8 +31,10 @@ For the back- and frontend there is a Dockerfile for building respective images.
 Build the two images (in the respective folders):
 
 ```bash
+# from within the frontend directory
 docker image build cashflow_frontend:latest .
 
+# from within the backend directory
 docker image build cashflow_backend:latest .
 ```
 
@@ -42,10 +44,31 @@ In order to use it, it is required to first create the needed Docker network:
 docker network create cashflow
 ```
 
+For security, credentials are supposed to live inside an `.env` file. Create a `.env` file at the project root with the following keys:
+
+- MONGO_INITDB_ROOT_USERNAME
+- MONGO_INITDB_ROOT_PASSWORD
+
 Now, the application with all its dependencies can be launched with:
 
 ```bash
 docker compose up
 ```
 
+Next, to run it in detached mode:
+
+```bash
+docker compose up -d
+```
+
+Logs can be viewed and piped, for example:
+
+```bash
+docker compose logs > logs.log
+```
+
 Note: this is a preliminary attempt for utilizing Docker.
+
+For production, settings on the host and the docker container running MongoDB are advised. Note, the logs state that authentication is not required. My testings showed that authentication is in fact required. This message is - perhaps - generated before authentication is enforced.
+
+Furthermore, in an production environment it is a good idea to run the frontend behind a reverse proxy and set up the Vite app correctly (currently running in dev mode).
