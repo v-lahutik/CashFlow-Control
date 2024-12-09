@@ -4,6 +4,11 @@ services:
     container_name: mongodb
     networks:
       - cashflow
+    environment:
+      - GLIBC_TUNABLES=glibc.pthread.rseq=0
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+    command: ["mongod", "--auth"]
 
   backend:
     image: cashflow_backend:latest
@@ -12,7 +17,7 @@ services:
     networks:
       - cashflow
     environment:
-      DB_URI: mongodb://db:27017
+      DB_URI: mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@db:27017/admin
 
   frontend:
     image: cashflow_frontend:latest
